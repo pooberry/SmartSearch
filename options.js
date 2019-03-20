@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () 
 {
-  document.getElementById("swag").addEventListener("click", getStore);
+  document.getElementById("tokenEnterButton").addEventListener("click", getStore);
 });
 function getStore()
 {
-    
+   var tkn= tokenStore.value;
+   console.log(tkn);
+
 }
