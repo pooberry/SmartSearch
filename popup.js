@@ -1,10 +1,14 @@
 //var
-var token;
+var authToken;
 var instName;
 var instURL;
 var instAuth;
 var jsonData = [];
 
+chrome.storage.sync.get(["token"], function(result)
+{
+     authToken = results.token;
+});
 
 
 // action 
@@ -16,12 +20,12 @@ document.addEventListener("DOMContentLoaded", function()
 
 function run()
 {
-    getToken();
+    //getToken();
     instanceURL();
     instanceName();
     instanceAuth();
-    makeRequest();
-    //xhrRequest();
+    //makeRequest();
+    xhrRequest();
     
     
     
@@ -63,7 +67,7 @@ function run()
             crossDomain: true,
             headers:
             {
-                "Authorization": "Bearer " + token,
+                "Authorization": "Bearer " + authToken,
                 
             },
             
@@ -82,7 +86,7 @@ function run()
 
         
     }
-    /*function xhrRequest()
+    function xhrRequest()
     {
         var data = new FormData();
         data.append("account_domain_lookup[name]", instName);
@@ -99,9 +103,9 @@ function run()
         });
         
         xhr.open("POST", window.location.hostname + "/api/v1/account_domain_lookups/");
-        xhr.setRequestHeader("Authorization", "Bearer "+ token);
+        xhr.setRequestHeader("Authorization", "Bearer "+ authToken);
         xhr.setRequestHeader("cache-control", "no-cache");
         xhr.setRequestHeader("Postman-Token", "248a97f7-b9e9-4b9a-88f7-1ba23e36d20a");
         
         xhr.send(data);
-    }*/
+    }
