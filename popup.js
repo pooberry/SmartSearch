@@ -22,6 +22,11 @@ var instAuth;
     {
         instAuth = document.getElementById("enterAuth").value;
         console.log(instAuth);
+        // handle null authentication
+        if(instAuth == "")
+        {
+            instAuth = null;
+        }
         
     }
     function successFail(returnStatus)
