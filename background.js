@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function ()
 });
 function run() 
 {
-  getToken();
+  //getToken();
   instanceURL();
   instanceName();
   instanceAuth();
