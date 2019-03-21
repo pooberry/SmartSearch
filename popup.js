@@ -8,7 +8,6 @@ var jsonData = [];
 chrome.storage.sync.get(["token"], function(result)
 {
      authToken = result.token;
-     console.log(authToken);
 
 });
 
