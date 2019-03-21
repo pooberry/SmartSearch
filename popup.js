@@ -24,33 +24,18 @@ var jsonData = [];
         console.log(instAuth);
         
     }
-    function makeRequest()
+    function successFail(returnStatus)
     {
-        $.ajax({
-            url: "https://siteadmin.instructure.com/api/v1/account_domain_lookups/?" + "account_domain_lookup[name]=" + instName + "&account_domain_lookup[domain]=" + instURL + "&account_domain_lookup[authentication_provider]=" + instAuth,
-            //data: "account_domain_lookup[name]=" + instName + "account_domain_lookup[domain]=" + instURL + "account_domain_lookup[authentication_provider]=" + instAuth,
-            type: "options",
-            dataType: "json",
-            crossDomain: true,
-            headers:
-            {
-                "Authorization": "Bearer " + authToken,
-                
-            },
-            
-            beforeSend: function(xhr)
-            {
-                //xhr.setRequestHeader("Authorization", "Bearer " + token);
-
-                
-            },
-            success: function(response)
-            {
-                jsonData = response;
-                console.log(jsonData);
-            }
-        });
-
-        
+        if(returnStatus == "200")
+        {
+            alert("successfull");
+        }
+        if(returnStatus == null)
+        {
+            //do nothing
+        }
+        if(returnStatus != "200")
+        {
+            alert("fail");
+        }
     }
- 

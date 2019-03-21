@@ -1,3 +1,5 @@
+var returnStatus;
+
 document.addEventListener("DOMContentLoaded", function () 
 {
   document.getElementById("swag").addEventListener("click", run);// click the button and have it do crap
@@ -45,17 +47,18 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         xhr.addEventListener("readystatechange", function () {
           if (this.readyState === 4) {
             console.log(this.responseText);
-            console.log(this.status);
-            
+            returnStatus = this.status;
+            console.log(returnStatus);
+            successFail(returnStatus);
           }
         });
         
         xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
         xhr.setRequestHeader("Authorization", "Bearer "+ token);
-        
-        
-        
+                
         xhr.send(data);
+        
+
     }
       
      /*function makeRequest() {
