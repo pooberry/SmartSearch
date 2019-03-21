@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function()
 
 function run()
 {
-    //getToken();
+    
     instanceURL();
     instanceName();
     instanceAuth();
@@ -32,7 +32,7 @@ function run()
     
 }
 
-    function getToken() 
+    /*function getToken() 
     {
         
         {
@@ -40,7 +40,7 @@ function run()
             console.log(token);
         }
         
-    }
+    }*/
     function instanceName()
     {
         instName = document.getElementById("enterName").value;
