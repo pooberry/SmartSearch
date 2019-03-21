@@ -11,7 +11,7 @@ function run() //run the following functions on button press
   instanceName();
   instanceAuth();
   //makeRequest();//if using JQuery use this
-  xhrRequest();
+  submitRequest();
 
 }
 
@@ -32,9 +32,20 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
   {
     token=result.token;
   })// retrive token from options storage
-      
 
-      function xhrRequest()
+
+  function submitRequest()
+  {
+    if(instAuth != "")
+    {
+      xhrRequestAuth1();
+    }
+    if(instAuth =="")
+    {
+      xhrRequestAuth0();
+    }
+
+    function xhrRequestAuth1()
     {
         var data = new FormData();
         data.append("account_domain_lookup[name]", instName);
@@ -60,6 +71,32 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         
 
     }
+    function xhrRequestAuth0()
+    {
+        var data = new FormData();
+        data.append("account_domain_lookup[name]", instName);
+        data.append("account_domain_lookup[domain]", instURL);
+                
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        
+        xhr.addEventListener("readystatechange", function () {
+          if (this.readyState === 4) {
+            console.log(this.responseText);
+            returnStatus = this.status;
+            console.log(returnStatus);
+            successFail(returnStatus);
+          }
+        });
+        
+        xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
+        xhr.setRequestHeader("Authorization", "Bearer "+ token);
+                
+        xhr.send(data);
+        
+
+    }
+  }
       
      /*function makeRequest() {
        $.ajax({

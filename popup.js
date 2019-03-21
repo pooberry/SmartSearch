@@ -18,15 +18,12 @@ var instAuth;
         instURL = document.getElementById("enterURL").value;
         console.log(instURL);
     }
+   
     function instanceAuth()
     {
         instAuth = document.getElementById("enterAuth").value;
         console.log(instAuth);
-        // handle null authentication
-        if(instAuth == "")
-        {
-            instAuth = null;
-        }
+            
         
     }
     function successFail(returnStatus)
