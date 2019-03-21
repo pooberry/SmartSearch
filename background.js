@@ -25,7 +25,10 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
           actions: [new chrome.declarativeContent.ShowPageAction()]
     }]);
   });
-     
+  chrome.storage.local.get(["token"], function(result)
+  {
+    token=result.token2;
+  })
       
 
       function xhrRequest()

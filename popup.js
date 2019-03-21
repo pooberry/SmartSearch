@@ -5,6 +5,7 @@ var instURL;
 var instAuth;
 var jsonData = [];
 
+chrome.storage.local.get([])
 
 
 
