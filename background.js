@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () 
 {
-  document.getElementById("swag").addEventListener("click", run);
+  document.getElementById("swag").addEventListener("click", run);// click the button and have it do crap
 });
-function run() 
+function run() //run the following functions on button press
 {
   //getToken();
   instanceURL();
   instanceName();
   instanceAuth();
-  //makeRequest();
+  //makeRequest();//if using JQuery use this
   xhrRequest();
 
 }
 
-console.log("loaded");
+console.log("loaded background");
 var jsonData = [];
 
 chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -24,11 +24,12 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
       ],
           actions: [new chrome.declarativeContent.ShowPageAction()]
     }]);
-  });
+  });// make sure the page is a siteadmin page
+
   chrome.storage.local.get(["token"], function(result)
   {
     token=result.token;
-  })
+  })// retrive token from options storage
       
 
       function xhrRequest()
@@ -44,6 +45,8 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         xhr.addEventListener("readystatechange", function () {
           if (this.readyState === 4) {
             console.log(this.responseText);
+            console.log(this.status);
+            
           }
         });
         
