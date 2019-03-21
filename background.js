@@ -27,7 +27,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
   });
   chrome.storage.local.get(["token"], function(result)
   {
-    token=result.token2;
+    token=result.token;
   })
       
 
