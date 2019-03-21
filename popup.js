@@ -3,7 +3,7 @@ var authToken;
 var instName;
 var instURL;
 var instAuth;
-var jsonData = [];
+
 
 
 
