@@ -1,7 +1,12 @@
+document.onload
+{
+  visiallyConfirmTokenStored();
+}
 // use button to store token
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("tokenEnterButton").addEventListener("click", tStore);
 });
+
 
 function tStore()//stores the token in chrome locally
 {
@@ -30,7 +35,7 @@ function tRemove() //removes the stored token from chrome.
 };
 function visiallyConfirmTokenStored()
 {
-  chrome.storage.local.get([token], function(result)
+  chrome.storage.local.get(["token"], function(result)
   {
     if(result.token != null)
     {
