@@ -10,19 +10,23 @@ var instAuth;
     function instanceName()
     {
         instName = document.getElementById("enterName").value;
+        instName = instName.trim();
         console.log(instName);     
          
     }
     function instanceURL()
     {
         instURL = document.getElementById("enterURL").value;
+        instURL = instURL.trim();
         console.log(instURL);
     }
    
     function instanceAuth()
     {
         instAuth = document.getElementById("enterAuth").value;
+        instAuth = instAuth.trim();
         console.log(instAuth);
+        
             
         
     }

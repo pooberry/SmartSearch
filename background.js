@@ -14,6 +14,12 @@ function run() //run the following functions on button press
   submitRequest();
 
 }
+function precheck()
+{
+  instanceURL();
+  instanceName();
+  
+}
 
 console.log("loaded background");
 var jsonData = [];
@@ -36,6 +42,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
 
   function submitRequest()
   {
+    
     if(instAuth != "")
     {
       xhrRequestAuth1();
