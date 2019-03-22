@@ -7,17 +7,18 @@ document.addEventListener("DOMContentLoaded", function ()
 function run() //run the following functions on button press
 {
 
+  instanceURL();
+  instanceName();
+  instanceAuth();
+  //makeRequest();//if using JQuery use this
+  
   
   if(instName=="" || instURL=="")
   {
     alert("name or URL are not valid");
   }
   else{
-     //getToken();
-      instanceURL();
-      instanceName();
-      instanceAuth();
-      //makeRequest();//if using JQuery use this
+     
       submitRequest();
   }
   
