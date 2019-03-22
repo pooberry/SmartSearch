@@ -25,7 +25,7 @@ var instAuth;
     {
         instAuth = document.getElementById("enterAuth").value;
         instAuth = instAuth.trim();
-        instAuth = instAuth.toLowerCase();
+        instAuth = instAuth.toLowerCase(); // all auths must be lower case in Siteadmin
         console.log(instAuth);
         
             
