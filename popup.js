@@ -25,6 +25,7 @@ var instAuth;
     {
         instAuth = document.getElementById("enterAuth").value;
         instAuth = instAuth.trim();
+        instAuth = instAuth.toLowerCase();
         console.log(instAuth);
         
             

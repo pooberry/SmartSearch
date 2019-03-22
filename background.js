@@ -6,20 +6,23 @@ document.addEventListener("DOMContentLoaded", function ()
 });
 function run() //run the following functions on button press
 {
-  //getToken();
-  instanceURL();
-  instanceName();
-  instanceAuth();
-  //makeRequest();//if using JQuery use this
-  submitRequest();
 
-}
-function precheck()
-{
-  instanceURL();
-  instanceName();
+  
+  if(instName=="" || instURL=="")
+  {
+    alert("name or URL are not valid");
+  }
+  else{
+     //getToken();
+      instanceURL();
+      instanceName();
+      instanceAuth();
+      //makeRequest();//if using JQuery use this
+      submitRequest();
+  }
   
 }
+
 
 console.log("loaded background");
 var jsonData = [];
