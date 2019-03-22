@@ -10,7 +10,7 @@ function run() //run the following functions on button press
   instanceURL();
   instanceName();
   instanceAuth();
-  //makeRequest();//if using JQuery use this
+  
   
   
   if(instName=="" || instURL=="")
@@ -109,25 +109,4 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     }
   }
       
-     /*function makeRequest() {
-       $.ajax({
-         url: "https://siteadmin.instructure.com/api/v1/account_domain_lookups/?" + "account_domain_lookup[name]=" + instName + "&account_domain_lookup[domain]=" + instURL + "&account_domain_lookup[authentication_provider]=" + instAuth,
-         //data: "account_domain_lookup[name]=" + instName + "account_domain_lookup[domain]=" + instURL + "account_domain_lookup[authentication_provider]=" + instAuth,
-         type: "options",
-         dataType: "json",
-         crossDomain: true,
-         headers: {
-           "Authorization": "Bearer " + token,
-
-         },
-
-         
-         },
-         success: function (response) {
-           jsonData = response;
-           console.log(jsonData);
-         }
-       });
-
-
-     }*/ //if for whatever reason jQueary becomes needed for the code block we can use this. 
+      
