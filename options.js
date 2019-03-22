@@ -1,8 +1,9 @@
+// use button to store token
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("tokenEnterButton").addEventListener("click", tStore);
 });
 
-function tStore()
+function tStore()//stores the token in chrome locally
 {
    var token2 = document.getElementById("tokenInputBox").value;
      
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-function tRemove()
+function tRemove() //removes the stored token from chrome. 
 {
   chrome.storage.local.remove(["token"],function()
 
@@ -27,3 +28,18 @@ function tRemove()
     alert("token cleared successfully");
   })
 };
+function visiallyConfirmTokenStored()
+{
+  chrome.storage.local.get([token], function(result)
+  {
+    if(result.token != null)
+    {
+      var removeNoTokenWarning = document.getElementById("storedTokenNo");
+      removeNoTokenWarning.style.display="none";
+    }
+    else{
+      var removeTokenPresentMessage = document.getElementById("storedTokenYes");
+      removeTokenPresentMessage.style.display="none";
+    }
+  })
+}
