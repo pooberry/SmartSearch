@@ -109,5 +109,30 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
 
     }
   }
+
+
+function authCheck()
+{
+  var data1 = null;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        console.log(this.responseText);
+        var authStatus= this.status;
+      }
+    });
+
+    xhr.open("GET", "https://" + instURL + "/api/v1/accounts/self/authentication_providers/"+ instAuth);
+    xhr.setRequestHeader("Authorization", "Bearer "+ token);
+    xhr.setRequestHeader("cache-control", "no-cache");
+    
+
+    xhr.send(data1);
+} 
+
+
       
       
