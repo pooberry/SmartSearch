@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function ()
 {
   document.getElementById("swag").addEventListener("click", run);// click the button and have it do crap
 });
+
 function run() //run the following functions on button press
 {
 
