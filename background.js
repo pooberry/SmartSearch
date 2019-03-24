@@ -14,10 +14,24 @@ function run() //run the following functions on button press
   
   
   
+  
   if(instName=="" || instURL=="")
   {
     alert("name or URL are not valid");
   }
+  /*if(authValidateBoxStatus.checked == true)
+  {
+    authCheck();
+    if(authStatus == 200)
+    {
+      console.log("authentication passed validation");
+      submitRequest();
+    }
+    if(authStatus != 200)
+    {
+      alert("Auth Validation did not pass");
+    }
+  }*/
   else{
      
       submitRequest();

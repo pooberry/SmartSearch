@@ -48,3 +48,7 @@ function visiallyConfirmTokenStored()
     }
   })
 }
+function authValidateCheckbox()
+{
+  var authValidateBoxStatus = document.getElementById("enableAuthCheckBox");
+}
