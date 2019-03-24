@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("enableAuthCheckBox").addEventListener("click", authValidateCheckbox);
-});
+});// listen for box option 
 
 
 function tStore()//stores the token in chrome locally
@@ -62,4 +62,4 @@ function authValidateCheckbox()
 
 });
   
-}
+}// store box option. 
