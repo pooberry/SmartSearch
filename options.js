@@ -1,13 +1,14 @@
 document.onload
 {
   visiallyConfirmTokenStored();
+  retriveAuthValidateCheckboxStore();
 }
 // use button to store token
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("tokenEnterButton").addEventListener("click", tStore);
 });
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("enableAuthCheckBox").addEventListener("click", authValidateCheckbox);
+  document.getElementById("enableAuthCheckBox").addEventListener("click", authValidateCheckboxStore);
 });// listen for box option 
 
 
@@ -51,15 +52,23 @@ function visiallyConfirmTokenStored()// shows if the token is stored
     }
   })
 }
-function authValidateCheckbox()
+function authValidateCheckboxStore()
 {
   var authValidateBoxStatus = document.getElementById("enableAuthCheckBox").checked;
   
 
-  chrome.storage.local.set({"authValidateOnOff": authValidateCheckbox}, function()
+  chrome.storage.local.set({"authValidateOnOff": authValidateBoxStatus}, function()
 {
   console.log("auth check " +  authValidateBoxStatus);
 
 });
   
 }// store box option. 
+
+function retriveAuthValidateCheckboxStore()
+{
+  chrome.storage.local.get("authValidateOnOff", function(result)
+  {
+    document.getElementById("enableAuthCheckBox").checked = result.authValidateOnOff;
+  })
+}
