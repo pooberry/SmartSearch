@@ -6,6 +6,9 @@ document.onload
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("tokenEnterButton").addEventListener("click", tStore);
 });
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("enableAuthCheckBox").addEventListener("click", authValidateCheckbox);
+});
 
 
 function tStore()//stores the token in chrome locally
@@ -33,7 +36,7 @@ function tRemove() //removes the stored token from chrome.
     alert("token cleared successfully");
   })
 };
-function visiallyConfirmTokenStored()
+function visiallyConfirmTokenStored()// shows if the token is stored
 {
   chrome.storage.local.get(["token"], function(result)
   {
@@ -50,5 +53,13 @@ function visiallyConfirmTokenStored()
 }
 function authValidateCheckbox()
 {
-  var authValidateBoxStatus = document.getElementById("enableAuthCheckBox");
+  var authValidateBoxStatus = document.getElementById("enableAuthCheckBox").checked;
+  
+
+  chrome.storage.local.set({"authValidateOnOff": authValidateCheckbox}, function()
+{
+  console.log("auth check " +  authValidateBoxStatus);
+
+});
+  
 }
