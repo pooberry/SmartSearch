@@ -19,7 +19,7 @@ function run() //run the following functions on button press
   {
     alert("name or URL are not valid");
   }
-  /*if(authValidateBoxStatus.checked == true)
+  if(authValidateBoxStatus == true)
   {
     authCheck();
     if(authStatus == 200)
@@ -31,7 +31,7 @@ function run() //run the following functions on button press
     {
       alert("Auth Validation did not pass");
     }
-  }*/
+  }
   else{
      
       submitRequest();
