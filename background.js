@@ -13,8 +13,6 @@ function run() //run the following functions on button press
   instanceAuth();
   
   
-  
-  
   if(instName=="" || instURL=="")
   {
     alert("name or URL are not valid");
