@@ -73,4 +73,4 @@ function retriveAuthValidateCheckboxStore()
   {
     document.getElementById("enableAuthCheckBox").checked = result.authValidateOnOff;
   })
-}
+}// hold the checkbox status accross refresh. 

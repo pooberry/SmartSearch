@@ -18,7 +18,7 @@ function run() //run the following functions on button press
   {
     alert("name or URL are not valid");
   }
-  /*if(onnOff1 == true)
+  if(checkTheAuth == true)
   {
     authCheck();
     if(authStatus == 200)
@@ -30,7 +30,7 @@ function run() //run the following functions on button press
     {
       console.log("auth Validation did not pass!");
     }
-  }*/ 
+  }
   else{
      
       submitRequest();
@@ -55,7 +55,14 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
   chrome.storage.local.get(["token"], function(result)
   {
     token=result.token;
-  })// retrive token from options storage
+  });// retrive token from options storage
+
+  chrome.storage.local.get(["authValidateOnOff"], function(result)
+  {
+    checkTheAuth = result.authValidateOnOff;
+    console.log(checkTheAuth);
+  });// retrive onn off status 1
+
 
 
   function submitRequest()
