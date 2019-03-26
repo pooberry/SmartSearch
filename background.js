@@ -18,7 +18,7 @@ function run() //run the following functions on button press
   {
     alert("name or URL are not valid");
   }
-  if(onnOff1 == true)
+  /*if(onnOff1 == true)
   {
     authCheck();
     if(authStatus == 200)
@@ -30,7 +30,7 @@ function run() //run the following functions on button press
     {
       console.log("auth Validation did not pass!");
     }
-  }
+  }*/ 
   else{
      
       submitRequest();
