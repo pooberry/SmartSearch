@@ -1,3 +1,5 @@
+var authValidateBoxStatus;
+
 document.onload
 {
   visiallyConfirmTokenStored();
@@ -54,7 +56,7 @@ function visiallyConfirmTokenStored()// shows if the token is stored
 }
 function authValidateCheckboxStore()
 {
-  var authValidateBoxStatus = document.getElementById("enableAuthCheckBox").checked;
+  authValidateBoxStatus = document.getElementById("enableAuthCheckBox").checked;
   
 
   chrome.storage.local.set({"authValidateOnOff": authValidateBoxStatus}, function()

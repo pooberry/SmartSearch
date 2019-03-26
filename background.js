@@ -1,4 +1,5 @@
 var returnStatus;
+var authStatus;
 
 document.addEventListener("DOMContentLoaded", function () 
 {
@@ -17,7 +18,7 @@ function run() //run the following functions on button press
   {
     alert("name or URL are not valid");
   }
-  if(authValidateBoxStatus == true)
+  if(onnOff1 == true)
   {
     authCheck();
     if(authStatus == 200)
@@ -27,7 +28,7 @@ function run() //run the following functions on button press
     }
     if(authStatus != 200)
     {
-      alert("Auth Validation did not pass");
+      console.log("auth Validation did not pass!");
     }
   }
   else{
@@ -117,15 +118,13 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         xhr.setRequestHeader("Authorization", "Bearer "+ token);
                 
         xhr.send(data);
-        
-
-    }
+      }
   }
 
 
 function authCheck()
 {
-  var data1 = null;
+  var data = null;
 
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
@@ -133,7 +132,8 @@ function authCheck()
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
         console.log(this.responseText);
-        var authStatus= this.status;
+        authStatus= this.status;
+        console.log(authStatus);
       }
     });
 
@@ -142,7 +142,7 @@ function authCheck()
     xhr.setRequestHeader("cache-control", "no-cache");
     
 
-    xhr.send(data1);
+    xhr.send(data);
 } 
 
 
