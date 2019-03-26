@@ -18,19 +18,7 @@ function run() //run the following functions on button press
   {
     alert("name or URL are not valid");
   }
-  if(checkTheAuth == true)
-  {
-    authCheck();
-    if(authStatus == 200)
-    {
-      console.log("authentication passed validation");
-      submitRequest();
-    }
-    if(authStatus != 200)
-    {
-      console.log("auth Validation did not pass!");
-    }
-  }
+ 
   else{
      
       submitRequest();
@@ -57,10 +45,10 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     token=result.token;
   });// retrive token from options storage
 
-  chrome.storage.local.get(["authValidateOnOff"], function(result)
+  chrome.storage.local.get(["duplicateValidateOnOff"], function(result)
   {
-    checkTheAuth = result.authValidateOnOff;
-    console.log(checkTheAuth);
+    duplicateCheck = result.duplicateValidateOnOff;
+    console.log(duplicateCheck);
   });// retrive onn off status 1
 
 
@@ -127,31 +115,6 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         xhr.send(data);
       }
   }
-
-
-function authCheck()
-{
-  var data = null;
-
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-
-    xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        console.log(this.responseText);
-        authStatus= this.status;
-        console.log(authStatus);
-      }
-    });
-
-    xhr.open("GET", "https://" + instURL + "/api/v1/accounts/self/authentication_providers/"+ instAuth);
-    xhr.setRequestHeader("Authorization", "Bearer "+ token);
-    xhr.setRequestHeader("cache-control", "no-cache");
-    
-
-    xhr.send(data);
-} 
-
 
       
       
