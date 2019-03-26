@@ -1,16 +1,16 @@
-var authValidateBoxStatus;
+var duplicateValidateBoxStatus;
 
 document.onload
 {
   visiallyConfirmTokenStored();
-  retriveAuthValidateCheckboxStore();
+  duplicateValidateCheckboxStore();
 }
 // use button to store token
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("tokenEnterButton").addEventListener("click", tStore);
 });
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("enableAuthCheckBox").addEventListener("click", authValidateCheckboxStore);
+  document.getElementById("duplicateCheckBox").addEventListener("click", duplicateCheckboxStore);
 });// listen for box option 
 
 
@@ -54,23 +54,23 @@ function visiallyConfirmTokenStored()// shows if the token is stored
     }
   })
 }
-function authValidateCheckboxStore()
+function duplicateCheckboxStore()
 {
-  authValidateBoxStatus = document.getElementById("enableAuthCheckBox").checked;
+  duplicateValidateBoxStatus = document.getElementById("duplicateCheckBox").checked;
   
 
-  chrome.storage.local.set({"authValidateOnOff": authValidateBoxStatus}, function()
+  chrome.storage.local.set({"duplicateValidateOnOff": duplicateValidateBoxStatus}, function()
 {
-  console.log("auth check " +  authValidateBoxStatus);
+  console.log("duplicate check " +  duplicateValidateBoxStatus);
 
 });
   
 }// store box option. 
 
-function retriveAuthValidateCheckboxStore()
+function duplicateValidateCheckboxStore()
 {
-  chrome.storage.local.get("authValidateOnOff", function(result)
+  chrome.storage.local.get("duplicateValidateOnOff", function(result)
   {
-    document.getElementById("enableAuthCheckBox").checked = result.authValidateOnOff;
+    document.getElementById("duplicateCheckBox").checked = result.duplicateValidateOnOff;
   })
 }// hold the checkbox status accross refresh. 
