@@ -1,5 +1,6 @@
 var returnStatus;
 var authStatus;
+var isThereADuplicate;
 
 document.addEventListener("DOMContentLoaded", function () 
 {
@@ -12,11 +13,16 @@ function run() //run the following functions on button press
   instanceURL();
   instanceName();
   instanceAuth();
+  checkForDuplicate();
   
   
   if(instName=="" || instURL=="")
   {
     alert("name or URL are not valid");
+  }
+  if(duplicateCheck == true && isThereADuplicate != "[]")
+  {
+    alert("potential duplicate found");
   }
  
   else{
@@ -114,6 +120,25 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
                 
         xhr.send(data);
       }
+  }
+  function checkForDuplicate()
+  {
+    var data = null;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        console.log(this.responseText);
+        isThereADuplicate = this.responseText;
+      }
+    });
+
+    xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
+    xhr.setRequestHeader("Authorization", "Bearer " + token);
+    
+    xhr.send(data);
   }
 
       
