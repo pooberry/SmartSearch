@@ -20,10 +20,10 @@ function run() //run the following functions on button press
   {
     alert("name or URL are not valid");
   }
-  if(duplicateCheck == true && isThereADuplicate != "[]")
+  /*if(duplicateCheck == true && (isThereADuplicate.length == 0 || isThereADuplicate ))
   {
     alert("potential duplicate found");
-  }
+  }*/
  
   else{
      
@@ -131,7 +131,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
         console.log(this.responseText);
-        isThereADuplicate = this.responseText;
+        isThereADuplicate = JSON.parse(this.responseText);
       }
     });
 
