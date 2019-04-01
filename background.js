@@ -22,7 +22,7 @@ function run() //run the following functions on button press
   }
   if(duplicateCheck == true && isThereADuplicate==true)
   {
-    alert("potential duplicate found");
+    alert("potential duplicate found");//this will be replaced by a yes no button later. 
   }
   else{
      
