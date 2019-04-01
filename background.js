@@ -1,6 +1,6 @@
 var returnStatus;
 var authStatus;
-var isThereADuplicate;
+var isThereADuplicate = false;
 
 document.addEventListener("DOMContentLoaded", function () 
 {
@@ -20,11 +20,10 @@ function run() //run the following functions on button press
   {
     alert("name or URL are not valid");
   }
-  /*if(duplicateCheck == true && (isThereADuplicate.length == 0 || isThereADuplicate ))
+  if(duplicateCheck == true && isThereADuplicate==true)
   {
     alert("potential duplicate found");
-  }*/
- 
+  }
   else{
      
       submitRequest();
@@ -127,11 +126,36 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
 
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
+    //xhr.responseType = "json"
 
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
-        console.log(this.responseText);
-        isThereADuplicate = JSON.parse(this.responseText);
+        
+
+        var dupeArray = JSON.parse(this.responseText);  
+        console.log(dupeArray);     
+        for(var i = 0; i < dupeArray.length; i++)
+        {
+        console.log(dupeArray[i].id);
+         if(dupeArray[i].domain == instURL)
+         {
+          isThereADuplicate = true;
+          console.log("found same domain");
+         }
+         if(dupeArray[i].name == instName)
+         {
+           isThereADuplicate = true;
+           console.log("found same name");
+         }
+         else{
+           isThereADuplicate = false;
+           console.log("else hit");
+         }
+
+
+        }
+        
+
       }
     });
 
