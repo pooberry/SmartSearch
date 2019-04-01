@@ -1,6 +1,6 @@
 var returnStatus;
 var authStatus;
-var isThereADuplicate = false;
+var isThereADuplicate;
 
 document.addEventListener("DOMContentLoaded", function () 
 {
@@ -136,7 +136,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         console.log(dupeArray);     
         for(var i = 0; i < dupeArray.length; i++)
         {
-        console.log(dupeArray[i].domain);
+        
          if(dupeArray[i].domain == instURL)
          {
           isThereADuplicate = true;
