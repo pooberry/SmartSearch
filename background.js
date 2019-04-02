@@ -12,17 +12,18 @@ function run() //run the following functions on button press
 
   instanceURL();
   instanceName();
-  instanceAuth();
-  checkForDuplicate();
-  
+  instanceAuth();  
   
   if(instName=="" || instURL=="")
   {
     alert("name or URL are not valid");
   }
-  if(duplicateCheck == true && isThereADuplicate==true)
+  if(duplicateCheck == true)
   {
-    alert("potential duplicate found");//this will be replaced by a yes no button later. 
+    console.log("duplicateCheckIsOn");
+    checkForDuplicate(isThereADuplicate);
+    console.log("is there a duplicate" + isThereADuplicate);// going to need to have java wait for the parse the array. And then send the variable
+
   }
   else{
      
@@ -128,7 +129,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     xhr.withCredentials = true;
     //xhr.responseType = "json"
 
-    xhr.addEventListener("readystatechange", function () {
+    xhr.addEventListener("readystatechange", function() {
       if (this.readyState === 4) {
         
 
@@ -149,8 +150,8 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
          }
          else{
            isThereADuplicate = false;
-           console.log("else hit");
          }
+        
 
 
         }
