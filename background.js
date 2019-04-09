@@ -20,8 +20,7 @@ function run() //run the following functions on button press
   }
   if(duplicateCheck == true)
   {
-    
-    console.log(checkForDuplicate1(isThereADuplicate));  
+    checkForDuplicate(isThereADuplicate);
     console.log("is there a duplicate " + isThereADuplicate);// going to need to have java wait for the parse the array. And then send the variable
 
   }
@@ -121,48 +120,50 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         xhr.send(data);
       }
   }
-  async function checkForDuplicate1(var1)
+  function checkForDuplicate(var1)
   {
-    var data = null;
+    var jsonDataArray;
+    var status;
 
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    //xhr.responseType = "json"
+    return new Promise(function(resolve, reject)
+    {
+      //XHR request
+      var data = null;
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
 
-    xhr.addEventListener("readystatechange", function() {
-      if (this.readyState === 4) {
-        
-
-        var dupeArray = JSON.parse(this.responseText);  
-        console.log(dupeArray);     
-        for(var i = 0; i < dupeArray.length; i++)
+      xhr.addEventListener("readystatechange", function (){
+        if (this.readyState === 4) 
         {
-        
-         if(dupeArray[i].domain == instURL)
-         {
-          var1 = true;
-          console.log("found same domain");
-         }
-         if(dupeArray[i].name == instName)
-         {
-           var1 = true;
-           console.log("found same name");
-         }
-         else{
-           var1 = false;
-         }
-        return var1;
+          //console.log(this.responseText);
+          jsonDataArray = JSON.parse(this.responseText)
+          status = this.status;
+
+         
         }
-        
+      });
 
+      xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
+      xhr.setRequestHeader("Authorization", "Bearer " + token);      
+
+      xhr.send(data);
+
+      for(var i = 0; i < jsonDataArray.length; i++ )
+      {
+        if(jsonDataArray[i].domain == instURL && jsonDataArray[i].name == instName)
+        {
+          resolve(true);
+          var1 = true;
+        }
+        else{
+          reject(false);
+          var1 = false;
+        }
       }
-    });
-
-    xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
-    xhr.setRequestHeader("Authorization", "Bearer " + token);
+      
+    })
+}
     
-    xhr.send(data);
-  };
 
 
       
