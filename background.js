@@ -20,8 +20,8 @@ function run() //run the following functions on button press
   }
   if(duplicateCheck == true)
   {
-    checkForDuplicate(isThereADuplicate);
-    console.log("is there a duplicate " + isThereADuplicate);// going to need to have java wait for the parse the array. And then send the variable
+    var isThereADuplicate = checkForDuplicate(isThereADuplicate);
+    console.log(isThereADuplicate);
 
   }
   else{
