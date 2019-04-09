@@ -1,8 +1,20 @@
+var duplicateValidateBoxStatus;
+
+document.onload
+{
+  visiallyConfirmTokenStored();
+  duplicateValidateCheckboxStore();
+}
+// use button to store token
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("tokenEnterButton").addEventListener("click", tStore);
 });
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("duplicateCheckBox").addEventListener("click", duplicateCheckboxStore);
+});// listen for box option 
 
-function tStore()
+
+function tStore()//stores the token in chrome locally
 {
    var token2 = document.getElementById("tokenInputBox").value;
      
@@ -18,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-function tRemove()
+function tRemove() //removes the stored token from chrome. 
 {
   chrome.storage.local.remove(["token"],function()
 
@@ -27,3 +39,38 @@ function tRemove()
     alert("token cleared successfully");
   })
 };
+function visiallyConfirmTokenStored()// shows if the token is stored
+{
+  chrome.storage.local.get(["token"], function(result)
+  {
+    if(result.token != null)
+    {
+      var removeNoTokenWarning = document.getElementById("storedTokenNo");
+      removeNoTokenWarning.style.display="none";
+    }
+    else{
+      var removeTokenPresentMessage = document.getElementById("storedTokenYes");
+      removeTokenPresentMessage.style.display="none";
+    }
+  })
+}
+function duplicateCheckboxStore()
+{
+  duplicateValidateBoxStatus = document.getElementById("duplicateCheckBox").checked;
+  
+
+  chrome.storage.local.set({"duplicateValidateOnOff": duplicateValidateBoxStatus}, function()
+{
+  console.log("duplicate check " +  duplicateValidateBoxStatus);
+
+});
+  
+}// store box option. 
+
+function duplicateValidateCheckboxStore()
+{
+  chrome.storage.local.get("duplicateValidateOnOff", function(result)
+  {
+    document.getElementById("duplicateCheckBox").checked = result.duplicateValidateOnOff;
+  })
+}// hold the checkbox status accross refresh. 
