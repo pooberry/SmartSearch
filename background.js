@@ -148,18 +148,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
 
       xhr.send(data);
 
-      for(var i = 0; i < jsonDataArray.length; i++ )
-      {
-        if(jsonDataArray[i].domain == instURL && jsonDataArray[i].name == instName)
-        {
-          resolve(true);
-          var1 = true;
-        }
-        else{
-          reject(false);
-          var1 = false;
-        }
-      }
+      
       
     })
 }
