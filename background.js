@@ -20,9 +20,9 @@ function run() //run the following functions on button press
   }
   if(duplicateCheck == true)
   {
-    console.log("duplicateCheckIsOn");
-    checkForDuplicate(isThereADuplicate);
-    console.log("is there a duplicate" + isThereADuplicate);// going to need to have java wait for the parse the array. And then send the variable
+    
+    console.log(checkForDuplicate1(isThereADuplicate));  
+    console.log("is there a duplicate " + isThereADuplicate);// going to need to have java wait for the parse the array. And then send the variable
 
   }
   else{
@@ -121,7 +121,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         xhr.send(data);
       }
   }
-  function checkForDuplicate()
+  async function checkForDuplicate1(var1)
   {
     var data = null;
 
@@ -140,20 +140,18 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         
          if(dupeArray[i].domain == instURL)
          {
-          isThereADuplicate = true;
+          var1 = true;
           console.log("found same domain");
          }
          if(dupeArray[i].name == instName)
          {
-           isThereADuplicate = true;
+           var1 = true;
            console.log("found same name");
          }
          else{
-           isThereADuplicate = false;
+           var1 = false;
          }
-        
-
-
+        return var1;
         }
         
 
@@ -164,7 +162,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     xhr.setRequestHeader("Authorization", "Bearer " + token);
     
     xhr.send(data);
-  }
+  };
 
-      
+
       
