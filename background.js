@@ -20,8 +20,15 @@ function run() //run the following functions on button press
   }
   if(duplicateCheck == true)
   {
-    var isThereADuplicate = checkForDuplicate(isThereADuplicate);
-    console.log(isThereADuplicate);
+    checkForDuplicate().then((message)=>{
+      isThereADuplicate=message;
+      console.log(isThereADuplicate);
+
+    }).catch((message)=>{
+      isThereADuplicate = message;
+      console.log(isThereADuplicate);
+    })
+    
 
   }
   else{
@@ -120,13 +127,14 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         xhr.send(data);
       }
   }
-  function checkForDuplicate(var1)
+  function checkForDuplicate()
   {
+    return new Promise(function(resolve, reject)
+    {
     var jsonDataArray;
     var status;
 
-    return new Promise(function(resolve, reject)
-    {
+    
       //XHR request
       var data = null;
       var xhr = new XMLHttpRequest();
@@ -138,15 +146,31 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
           //console.log(this.responseText);
           jsonDataArray = JSON.parse(this.responseText)
           status = this.status;
+          console.log(jsonDataArray);
+
+          //parse the array
+          for(let i =0; i < jsonDataArray.length; i++)
+          {
+            if(jsonDataArray[i].name == instName || jsonDataArray[i].domain == instURL)
+            {
+              resolve(true);
+            }
+            else
+            {
+              reject(false);
+            }
+          }
 
          
         }
+
       });
 
       xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
       xhr.setRequestHeader("Authorization", "Bearer " + token);      
 
       xhr.send(data);
+     
 
       
       
