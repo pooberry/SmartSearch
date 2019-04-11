@@ -1,6 +1,6 @@
 var returnStatus;
 var authStatus;
-var isThereADuplicate;
+//var isThereADuplicate;
 
 document.addEventListener("DOMContentLoaded", function () 
 {
@@ -17,16 +17,24 @@ function run() //run the following functions on button press
   if(instName=="" || instURL=="")
   {
     alert("name or URL are not valid");
+    return;
   }
   if(duplicateCheck == true)
   {
     checkForDuplicate().then((message)=>{
-      isThereADuplicate=message;
-      console.log(isThereADuplicate);
+      
+      if(message == true)
+      {
+        alert("potential duplicate found ")// switch this with yes no box later. 
+      }
+      if(message == false)
+      {
+        submitRequest();
+      }
 
     }).catch((message)=>{
-      isThereADuplicate = message;
-      console.log(isThereADuplicate);
+      console.log(message);
+
     })
     
 
@@ -132,7 +140,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     return new Promise(function(resolve, reject)
     {
     var jsonDataArray;
-    var status;
+    //var status;
 
     
       //XHR request
@@ -148,18 +156,22 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
           status = this.status;
           console.log(jsonDataArray);
 
+          
+
           //parse the array
-          for(let i =0; i < jsonDataArray.length; i++)
+          for(var i=0; i <= jsonDataArray.length; i++)
           {
             if(jsonDataArray[i].name == instName || jsonDataArray[i].domain == instURL)
             {
               resolve(true);
+              console.log("Likely duplicate found")
             }
-            else
-            {
-              reject(false);
+            else{
+              resolve(false);
+              console.log("no likely duplicate found")
             }
           }
+          reject(Error("something went wrong"))
 
          
         }
