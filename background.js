@@ -25,7 +25,11 @@ function run() //run the following functions on button press
       
       if(message == true)
       {
-        alert("potential duplicate found ")// switch this with yes no box later. 
+        //alert("potential duplicate found ")// switch this with yes no box later. 
+        if(window.confirm("A potential duplicate was found. Click OK to proceed anyway "))
+        {
+          submitRequest();
+        }
       }
       if(message == false)
       {
@@ -165,6 +169,8 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
             {
               resolve(true);
               console.log("Likely duplicate found")
+              console.log(jsonDataArray[i].name);
+              console.log(jsonDataArray[i].domain);
             }
             else{
               resolve(false);
