@@ -23,6 +23,7 @@ function run() //run the following functions on button press
   {
     checkForDuplicate().then((message)=>{
       
+      // check for duplicate and handle if one is possible
       if(message == true)
       {
         
@@ -34,6 +35,7 @@ function run() //run the following functions on button press
           //do any exit logic that needs to be done. 
         }
       }
+      
       if(message == false)
       {
         submitRequest();
@@ -46,6 +48,7 @@ function run() //run the following functions on button press
     
 
   }
+  //if duplicate checking is not enabled simply submit the request as is. 
   else{
      
       submitRequest();
@@ -54,7 +57,7 @@ function run() //run the following functions on button press
 }
 
 
-console.log("loaded background");
+//console.log("loaded background");
 var jsonData = [];
 
 chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -146,7 +149,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
   {
     return new Promise(function(resolve, reject)
     {
-    var jsonDataArray;
+    
     //var status;
 
     
@@ -164,36 +167,41 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
           console.log(jsonDataArray);
 
           
-
-          //parse the array
-          for(var i=0; i <= jsonDataArray.length; i++)
+          // need logic to catch blank returned array. 
+          if(jsonDataArray.length == undefined || jsonDataArray.length == 0)
           {
-            if(jsonDataArray[i].name == instName || jsonDataArray[i].domain == instURL)
-            {
-              resolve(true);
-              console.log("Likely duplicate found")
-              console.log(jsonDataArray[i].name);
-              console.log(jsonDataArray[i].domain);
-            }
-            else{
-              resolve(false);
-              console.log("no likely duplicate found")
-            }
+            console.log("no likely duplicate found")
+            resolve(false)
           }
-          reject(Error("something went wrong"))
 
-         
+          // if the array is not blank parse the array
+          if(jsonDataArray.length != undefined || jsonDataArray.length != 0)
+          {            
+          
+            for(var i=0; i <= jsonDataArray.length; i++)
+            {
+              if(jsonDataArray[i].name == instName || jsonDataArray[i].domain == instURL)
+              {
+                resolve(true);
+                console.log("Likely duplicate found")
+                console.log(jsonDataArray[i].name);
+                console.log(jsonDataArray[i].domain);
+              }
+              else{
+                resolve(false);
+                console.log("no likely duplicate found");
+              }
+            }
+            reject(Error("something went wrong"));         
         }
+      }
 
       });
 
       xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
       xhr.setRequestHeader("Authorization", "Bearer " + token);      
 
-      xhr.send(data);
-     
-
-      
+      xhr.send(data);      
       
     })
 }
