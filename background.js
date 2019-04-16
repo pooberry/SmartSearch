@@ -25,10 +25,13 @@ function run() //run the following functions on button press
       
       if(message == true)
       {
-        //alert("potential duplicate found ")// switch this with yes no box later. 
-        if(window.confirm("A potential duplicate was found. Click OK to proceed anyway "))
+        
+        if(window.confirm("A potential duplicate was found. \nClick OK to process the request \nClick cancel to abort"))
         {
           submitRequest();
+        }
+        else{
+          //do any exit logic that needs to be done. 
         }
       }
       if(message == false)
