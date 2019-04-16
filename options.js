@@ -20,8 +20,9 @@ function tStore()//stores the token in chrome locally
      
    chrome.storage.local.set({"token": token2}, function()
    {
-     console.log("value is " + token2);
+     //console.log("value is " + token2);
      alert("Token Stored succesfully")
+     location.reload(); // reload the page to update visiallyConfirmTokenStored()
    });
 
 }
@@ -37,6 +38,7 @@ function tRemove() //removes the stored token from chrome.
   {
     console.log("Token Removed");
     alert("token cleared successfully");
+    location.reload(); // reload the page to update visiallyConfirmTokenStored()
   })
 };
 function visiallyConfirmTokenStored()// shows if the token is stored
