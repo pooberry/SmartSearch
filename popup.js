@@ -36,6 +36,10 @@ var instAuth;
         if(returnStatus == "200")
         {
             alert("successfull");
+            document.getElementById("enterName").value = "";
+            document.getElementById("enterURL").value = "";
+            document.getElementById("enterAuth").value = "";
+
         }
         if(returnStatus == null)
         {
