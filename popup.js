@@ -1,4 +1,4 @@
-//var
+// global var
 var authToken;
 var instName;
 var instURL;
@@ -6,19 +6,20 @@ var instAuth;
 
 
 
-
     function instanceName()
     {
         instName = document.getElementById("enterName").value;
         instName = instName.trim();
-        console.log(instName);     
+        //console.log(instName);     
          
     }
     function instanceURL()
     {
         instURL = document.getElementById("enterURL").value;
         instURL = instURL.trim();
-        console.log(instURL);
+        instURL= instURL.replace(/^https?:\/\//,''); //remove domain
+        //console.log(instURL);
+        
     }
    
     function instanceAuth()
@@ -40,13 +41,13 @@ var instAuth;
             document.getElementById("enterURL").value = "";
             document.getElementById("enterAuth").value = "";
 
+        }       
+        if(returnStatus != "200")
+        {
+            alert("fail");
         }
         if(returnStatus == null)
         {
             //do nothing
-        }
-        if(returnStatus != "200")
-        {
-            alert("fail");
         }
     }
