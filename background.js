@@ -19,6 +19,7 @@ function run() //run the following functions on button press
     alert("name or URL are not valid");
     return;
   }
+
   if(duplicateCheck == true)
   {
     checkForDuplicate().then((message)=>{
@@ -49,6 +50,9 @@ function run() //run the following functions on button press
 
   }
   //if duplicate checking is not enabled simply submit the request as is. 
+
+ 
+
   else{
      
       submitRequest();
@@ -152,6 +156,7 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     
     //var status;
 
+
     
       //XHR request
       var data = null;
@@ -205,7 +210,5 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
       
     })
 }
-    
-
 
       
