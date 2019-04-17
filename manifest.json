@@ -6,11 +6,10 @@
   "version": "0.1.7",
 
   "page_action": {
-   
-   "default_popup": "popup.html",
-   "request_scripts": ["background.js"],
-   "default_icon": 
-   {
+
+    "default_popup": "popup.html",
+    "request_scripts": ["background.js"],
+    "default_icon": {
       "16": "images/Gengar16.png",
       "32": "images/Gengar32.png",
       "48": "images/Gengar64.png",
@@ -25,17 +24,15 @@
   },
 
   "options_page": "options.html",
-     
- "permissions": ["activeTab", "https://siteadmin.instructure.com/", "storage", "declarativeContent", "tabs"],
-   "content_scripts": [{
-       "js": ["background.js"],
-       "matches": [ "https://siteadmin.instructure.com/"]
-   }],
+
+  "permissions": ["activeTab", "https://siteadmin.instructure.com/", "storage", "declarativeContent", "tabs"],
+  "content_scripts": [{
+    "js": ["background.js"],
+    "matches": ["https://siteadmin.instructure.com/"]
+  }],
   "background": {
-      "scripts": ["background.js"],
-      "persistent": false,
-      "matches": ["https://siteadmin.instructure.com/"]
+    "scripts": ["background.js"],
+    "persistent": false,
+    "matches": ["https://siteadmin.instructure.com/"]
   }
 }
-
-  

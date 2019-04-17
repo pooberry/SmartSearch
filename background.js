@@ -2,9 +2,8 @@ var returnStatus;
 var authStatus;
 //var isThereADuplicate;
 
-document.addEventListener("DOMContentLoaded", function () 
-{
-  document.getElementById("swag").addEventListener("click", run);// click the button and have it do crap
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("swag").addEventListener("click", run); // click the button and have it do crap
 });
 
 function run() //run the following functions on button press
@@ -12,203 +11,180 @@ function run() //run the following functions on button press
 
   instanceURL();
   instanceName();
-  instanceAuth();  
-  
-  if(instName=="" || instURL=="")
-  {
+  instanceAuth();
+
+  if (instName == "" || instURL == "") {
     alert("name or URL are not valid");
     return;
   }
 
-  if(duplicateCheck == true)
-  {
-    checkForDuplicate().then((message)=>{
-      
+  if (duplicateCheck == true) {
+    checkForDuplicate().then((message) => {
+
       // check for duplicate and handle if one is possible
-      if(message == true)
-      {
-        
-        if(window.confirm("A potential duplicate was found. \nClick OK to process the request \nClick cancel to abort"))
-        {
+      if (message == true) {
+
+        if (window.confirm("A potential duplicate was found. \nClick OK to process the request \nClick cancel to abort")) {
           submitRequest();
-        }
-        else{
+        } else {
           //do any exit logic that needs to be done. 
         }
       }
-      
-      if(message == false)
-      {
+
+      if (message == false) {
         submitRequest();
       }
 
-    }).catch((message)=>{
+    }).catch((message) => {
       console.log(message);
 
     })
-    
+
 
   }
   //if duplicate checking is not enabled simply submit the request as is. 
+  else {
 
- 
-
-  else{
-     
-      submitRequest();
+    submitRequest();
   }
-  
+
 }
 
 
 //console.log("loaded background");
 var jsonData = [];
 
-chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-    chrome.declarativeContent.onPageChanged.addRules([{
-      conditions: [new chrome.declarativeContent.PageStateMatcher({
-        pageUrl: {hostEquals: 'siteadmin.instructure.com'},
-      })
-      ],
-          actions: [new chrome.declarativeContent.ShowPageAction()]
-    }]);
-  });// make sure the page is a siteadmin page
+chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+  chrome.declarativeContent.onPageChanged.addRules([{
+    conditions: [new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        hostEquals: 'siteadmin.instructure.com'
+      },
+    })],
+    actions: [new chrome.declarativeContent.ShowPageAction()]
+  }]);
+}); // make sure the page is a siteadmin page
 
-  chrome.storage.local.get(["token"], function(result)
-  {
-    token=result.token;
-  });// retrive token from options storage
+chrome.storage.local.get(["token"], function (result) {
+  token = result.token;
+}); // retrive token from options storage
 
-  chrome.storage.local.get(["duplicateValidateOnOff"], function(result)
-  {
-    duplicateCheck = result.duplicateValidateOnOff;
-    console.log(duplicateCheck);
-  });// retrive onn off status 1
-
+chrome.storage.local.get(["duplicateValidateOnOff"], function (result) {
+  duplicateCheck = result.duplicateValidateOnOff;
+  console.log(duplicateCheck);
+}); // retrive onn off status 1
 
 
-  function submitRequest()
-  {
-    
-    if(instAuth != "")
-    {
-      xhrRequestAuth1();
-    }
-    if(instAuth =="")
-    {
-      xhrRequestAuth0();
-    }
 
-    function xhrRequestAuth1()
-    {
-        var data = new FormData();
-        data.append("account_domain_lookup[name]", instName);
-        data.append("account_domain_lookup[domain]", instURL);
-        data.append("account_domain_lookup[authentication_provider]", instAuth);
-        
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        
-        xhr.addEventListener("readystatechange", function () {
-          if (this.readyState === 4) {
-            console.log(this.responseText);
-            returnStatus = this.status;
-            console.log(returnStatus);
-            successFail(returnStatus);
-          }
-        });
-        
-        xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
-        xhr.setRequestHeader("Authorization", "Bearer "+ token);
-                
-        xhr.send(data);
-        
+function submitRequest() {
 
-    }
-    function xhrRequestAuth0()
-    {
-        var data = new FormData();
-        data.append("account_domain_lookup[name]", instName);
-        data.append("account_domain_lookup[domain]", instURL);
-                
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        
-        xhr.addEventListener("readystatechange", function () {
-          if (this.readyState === 4) {
-            console.log(this.responseText);
-            returnStatus = this.status;
-            console.log(returnStatus);
-            successFail(returnStatus);
-          }
-        });
-        
-        xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
-        xhr.setRequestHeader("Authorization", "Bearer "+ token);
-                
-        xhr.send(data);
-      }
+  if (instAuth != "") {
+    xhrRequestAuth1();
   }
-  function checkForDuplicate()
-  {
-    return new Promise(function(resolve, reject)
-    {
-    
+  if (instAuth == "") {
+    xhrRequestAuth0();
+  }
+
+  function xhrRequestAuth1() {
+    var data = new FormData();
+    data.append("account_domain_lookup[name]", instName);
+    data.append("account_domain_lookup[domain]", instURL);
+    data.append("account_domain_lookup[authentication_provider]", instAuth);
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        console.log(this.responseText);
+        returnStatus = this.status;
+        console.log(returnStatus);
+        successFail(returnStatus);
+      }
+    });
+
+    xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
+    xhr.setRequestHeader("Authorization", "Bearer " + token);
+
+    xhr.send(data);
+
+
+  }
+
+  function xhrRequestAuth0() {
+    var data = new FormData();
+    data.append("account_domain_lookup[name]", instName);
+    data.append("account_domain_lookup[domain]", instURL);
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        console.log(this.responseText);
+        returnStatus = this.status;
+        console.log(returnStatus);
+        successFail(returnStatus);
+      }
+    });
+
+    xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
+    xhr.setRequestHeader("Authorization", "Bearer " + token);
+
+    xhr.send(data);
+  }
+}
+
+function checkForDuplicate() {
+  return new Promise(function (resolve, reject) {
+
     //var status;
 
 
-    
-      //XHR request
-      var data = null;
-      var xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
 
-      xhr.addEventListener("readystatechange", function (){
-        if (this.readyState === 4) 
-        {
-          //console.log(this.responseText);
-          jsonDataArray = JSON.parse(this.responseText)
-          status = this.status;
-          console.log(jsonDataArray);
+    //XHR request
+    var data = null;
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
 
-          
-          // need logic to catch blank returned array. 
-          if(jsonDataArray.length == undefined || jsonDataArray.length == 0)
-          {
-            console.log("no likely duplicate found")
-            resolve(false)
-          }
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        //console.log(this.responseText);
+        jsonDataArray = JSON.parse(this.responseText)
+        status = this.status;
+        console.log(jsonDataArray);
 
-          // if the array is not blank parse the array
-          if(jsonDataArray.length != undefined || jsonDataArray.length != 0)
-          {            
-          
-            for(var i=0; i <= jsonDataArray.length; i++)
-            {
-              if(jsonDataArray[i].name == instName || jsonDataArray[i].domain == instURL)
-              {
-                resolve(true);
-                console.log("Likely duplicate found")
-                console.log(jsonDataArray[i].name);
-                console.log(jsonDataArray[i].domain);
-              }
-              else{
-                resolve(false);
-                console.log("no likely duplicate found");
-              }
+
+        // need logic to catch blank returned array. 
+        if (jsonDataArray.length == undefined || jsonDataArray.length == 0) {
+          console.log("no likely duplicate found")
+          resolve(false)
+        }
+
+        // if the array is not blank parse the array
+        if (jsonDataArray.length != undefined || jsonDataArray.length != 0) {
+
+          for (var i = 0; i <= jsonDataArray.length; i++) {
+            if (jsonDataArray[i].name == instName || jsonDataArray[i].domain == instURL) {
+              resolve(true);
+              console.log("Likely duplicate found")
+              console.log(jsonDataArray[i].name);
+              console.log(jsonDataArray[i].domain);
+            } else {
+              resolve(false);
+              console.log("no likely duplicate found");
             }
-            reject(Error("something went wrong"));         
+          }
+          reject(Error("something went wrong"));
         }
       }
 
-      });
+    });
 
-      xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
-      xhr.setRequestHeader("Authorization", "Bearer " + token);      
+    xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
+    xhr.setRequestHeader("Authorization", "Bearer " + token);
 
-      xhr.send(data);      
-      
-    })
+    xhr.send(data);
+
+  })
 }
-
-      
