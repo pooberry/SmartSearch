@@ -10,16 +10,16 @@
     "default_popup": "popup.html",
     "request_scripts": ["background.js"],
     "default_icon": {
-      "16": "images/Gengar16.png",
-      "32": "images/Gengar32.png",
-      "48": "images/Gengar64.png",
-      "128": "images/Gengar128.png"
+      "16": "images/Jolt16.png",
+      "32": "images/Jolt32.png",
+      "48": "images/Jolt64.png",
+      "128": "images/Jolt128.png"
     },
     "icons": {
-      "16": "images/Gengar16.png",
-      "32": "images/Gengar32.png",
-      "48": "images/Gengar64.png",
-      "128": "images/Gengar128.png"
+      "16": "images/Jolt16.png",
+      "32": "images/Jolt32.png",
+      "48": "images/Jolt64.png",
+      "128": "images/Jolt128.png"
     }
   },
 
