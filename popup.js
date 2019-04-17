@@ -5,7 +5,6 @@ var instURL;
 var instAuth;
 
 
-
 function instanceName() {
     instName = document.getElementById("enterName").value;
     instName = instName.trim();

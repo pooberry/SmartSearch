@@ -52,7 +52,6 @@ function run() //run the following functions on button press
 
 
 //console.log("loaded background");
-var jsonData = [];
 
 chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
   chrome.declarativeContent.onPageChanged.addRules([{
@@ -65,8 +64,14 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
   }]);
 }); // make sure the page is a siteadmin page
 
+// get storage values from chrome. 
+
 chrome.storage.local.get(["token"], function (result) {
   token = result.token;
+  if (token == "" || token == undefined || token == null) {
+    alert("Please head to the options page to set your token."); // tell the user to add a token in the options page if one is not stored
+  }
+
 }); // retrive token from options storage
 
 chrome.storage.local.get(["duplicateValidateOnOff"], function (result) {
