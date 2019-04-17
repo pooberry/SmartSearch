@@ -26,7 +26,7 @@ var instAuth;
         instAuth = document.getElementById("enterAuth").value;
         instAuth = instAuth.trim();
         instAuth = instAuth.toLowerCase(); // all auths must be lower case in Siteadmin
-        console.log(instAuth);
+        //console.log(instAuth);
         
             
         
@@ -36,6 +36,10 @@ var instAuth;
         if(returnStatus == "200")
         {
             alert("successfull");
+            document.getElementById("enterName").value = "";
+            document.getElementById("enterURL").value = "";
+            document.getElementById("enterAuth").value = "";
+
         }
         if(returnStatus == null)
         {

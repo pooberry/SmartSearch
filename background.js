@@ -1,5 +1,6 @@
 var returnStatus;
 var authStatus;
+//var isThereADuplicate;
 
 document.addEventListener("DOMContentLoaded", function () 
 {
@@ -11,14 +12,47 @@ function run() //run the following functions on button press
 
   instanceURL();
   instanceName();
-  instanceAuth();
-  
+  instanceAuth();  
   
   if(instName=="" || instURL=="")
   {
     alert("name or URL are not valid");
+    return;
   }
+
+  if(duplicateCheck == true)
+  {
+    checkForDuplicate().then((message)=>{
+      
+      // check for duplicate and handle if one is possible
+      if(message == true)
+      {
+        
+        if(window.confirm("A potential duplicate was found. \nClick OK to process the request \nClick cancel to abort"))
+        {
+          submitRequest();
+        }
+        else{
+          //do any exit logic that needs to be done. 
+        }
+      }
+      
+      if(message == false)
+      {
+        submitRequest();
+      }
+
+    }).catch((message)=>{
+      console.log(message);
+
+    })
+    
+
+  }
+  //if duplicate checking is not enabled simply submit the request as is. 
+
  
+
   else{
      
       submitRequest();
@@ -27,7 +61,7 @@ function run() //run the following functions on button press
 }
 
 
-console.log("loaded background");
+//console.log("loaded background");
 var jsonData = [];
 
 chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -115,6 +149,66 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         xhr.send(data);
       }
   }
+  function checkForDuplicate()
+  {
+    return new Promise(function(resolve, reject)
+    {
+    
+    //var status;
 
+
+    
+      //XHR request
+      var data = null;
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener("readystatechange", function (){
+        if (this.readyState === 4) 
+        {
+          //console.log(this.responseText);
+          jsonDataArray = JSON.parse(this.responseText)
+          status = this.status;
+          console.log(jsonDataArray);
+
+          
+          // need logic to catch blank returned array. 
+          if(jsonDataArray.length == undefined || jsonDataArray.length == 0)
+          {
+            console.log("no likely duplicate found")
+            resolve(false)
+          }
+
+          // if the array is not blank parse the array
+          if(jsonDataArray.length != undefined || jsonDataArray.length != 0)
+          {            
+          
+            for(var i=0; i <= jsonDataArray.length; i++)
+            {
+              if(jsonDataArray[i].name == instName || jsonDataArray[i].domain == instURL)
+              {
+                resolve(true);
+                console.log("Likely duplicate found")
+                console.log(jsonDataArray[i].name);
+                console.log(jsonDataArray[i].domain);
+              }
+              else{
+                resolve(false);
+                console.log("no likely duplicate found");
+              }
+            }
+            reject(Error("something went wrong"));         
+        }
+      }
+
+      });
+
+      xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
+      xhr.setRequestHeader("Authorization", "Bearer " + token);      
+
+      xhr.send(data);      
       
+    })
+}
+
       
