@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <script src="uploadCSV.js"></script>
+    </head>
 
 <body>
-        <form enctype="multipart/form-data" action="/upload/csv" method="post">
-            <input id="csv-file" type="file">
-            <input type="submit">
-        </form>
+        
+    <form enctype="text/csv" action="/uploads/">
+        <input id="CSVFileUploaded" type="file">
+        <input type="submit" id="submitFile">
+    </form>         
+        
 </body>
 
 </html>
