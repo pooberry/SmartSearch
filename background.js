@@ -1,6 +1,8 @@
 var returnStatus;
 var authStatus;
-//var isThereADuplicate;
+var duplicateInstanceName;
+var duplicateInstanceURL;
+var duplicateInstanceID;
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("swag").addEventListener("click", run); // click the button and have it do crap
@@ -51,7 +53,7 @@ function run() //run the following functions on button press
       // check for duplicate and handle if one is possible
       if (message == true) {
 
-        if (window.confirm("A potential duplicate was found. \nClick OK to process the request \nClick cancel to abort")) {
+        if (window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID)) {
           submitRequest();
         } else {
           //do any exit logic that needs to be done. 
@@ -149,7 +151,7 @@ function checkForDuplicate() {
         //console.log(this.responseText);
         jsonDataArray = JSON.parse(this.responseText)
         status = this.status;
-        console.log(jsonDataArray);
+        //console.log(jsonDataArray);
 
 
         // need logic to catch blank returned array. 
@@ -165,8 +167,9 @@ function checkForDuplicate() {
             if (jsonDataArray[i].name == instName || jsonDataArray[i].domain == instURL) {
               resolve(true);
               console.log("Likely duplicate found")
-              console.log(jsonDataArray[i].name);
-              console.log(jsonDataArray[i].domain);
+              duplicateInstanceName = jsonDataArray[i].name;
+              duplicateInstanceURL = jsonDataArray[i].domain;
+              duplicateInstanceID = jsonDataArray[i].id;
             } else {
               resolve(false);
               console.log("no likely duplicate found");
