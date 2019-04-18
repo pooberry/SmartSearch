@@ -4,6 +4,7 @@ document.onload
 {
   visiallyConfirmTokenStored();
   duplicateValidateCheckboxStore();
+  CSVUploadCheckboxStore();
 }
 // use button to store token
 document.addEventListener("DOMContentLoaded", function () {
@@ -11,7 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("duplicateCheckBox").addEventListener("click", duplicateCheckboxStore);
-}); // listen for box option 
+}); // listen for duplicate box option 
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("CSVUploadCheckBox").addEventListener("click", CSVCheckboxStore);
+}); // listen for duplicate box option 
 
 
 function tStore() //stores the token in chrome locally
@@ -67,10 +71,29 @@ function duplicateCheckboxStore() {
 
   });
 
-} // store box option. 
+} // store box option for duplicate check. 
+
+function CSVCheckboxStore() {
+  CSVUploadBoxStatus = document.getElementById("CSVUploadCheckBox").checked;
+
+
+  chrome.storage.local.set({
+    "CSVUploadBoxStatusOnOff": CSVUploadBoxStatus
+  }, function () {
+    console.log("CSV upload " + CSVUploadBoxStatus);
+
+  });
+
+} // store box option for csv check.
 
 function duplicateValidateCheckboxStore() {
   chrome.storage.local.get("duplicateValidateOnOff", function (result) {
     document.getElementById("duplicateCheckBox").checked = result.duplicateValidateOnOff;
+  })
+} // hold the checkbox status accross refresh. 
+
+function CSVUploadCheckboxStore() {
+  chrome.storage.local.get("CSVUploadBoxStatusOnOff", function (result) {
+    document.getElementById("CSVUploadCheckBox").checked = result.CSVUploadBoxStatusOnOff;
   })
 } // hold the checkbox status accross refresh. 
