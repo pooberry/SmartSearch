@@ -10,14 +10,17 @@ document.addEventListener("DOMContentLoaded", function () {
 function Run2() {
     FileStore();
     FileParse().then((message) =>{
-        for(var i = 0; i < message.length; i++)
+        let data = message;
+        console.log(data.data);
+        for(var i = 0; i < data.data.length; i++)
         {
-            console.log("name" + message[i].name);
-            console.log("domain " + message[i].domain);
-            console.log("auth " + message[i].auth);
+            console.log("name " + data.data[i].name);
         }
+        
+       
     }).catch((message) => {
-        console.log(message);
+        let data = message
+        console.log(data);
     })
 }
 
@@ -34,7 +37,7 @@ function FileParse() {
             dynamicTyping: true,
             complete: function (results) {
                 //parsedResults = results;
-                console.log(results);
+                //console.log(results);
                 if(results.length != 0 || results.length !=undefined){
                     resolve(results);
                 }
