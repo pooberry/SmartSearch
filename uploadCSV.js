@@ -92,30 +92,7 @@ function SubmitRequest2(name, domain, auth) {
             reject(error("No Valid data found on line "));
         }// catch blank lines. 
 
-        if (auth != null || auth != undefined || auth != "") {
-            var data = new FormData();
-            data.append("account_domain_lookup[name]", name);
-            data.append("account_domain_lookup[domain]", domain);
-            data.append("account_domain_lookup[authentication_provider]", auth);
-
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                    console.log(this.responseText);
-                    let responseCode = this.status;
-                    resolve("Run status " + responseCode);
-                }
-            });
-
-            xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
-            xhr.setRequestHeader("Authorization", "Bearer " + token);
-            
-            xhr.send(data);
-
-        }
-        if(auth == null || auth == undefined || auth == "")
+        if(auth == null || auth == undefined || auth == "" || auth == "null")
         {
             var data = new FormData();
             data.append("account_domain_lookup[name]", name);
@@ -138,6 +115,31 @@ function SubmitRequest2(name, domain, auth) {
             
             xhr.send(data);
         }
+
+        else{
+            var data = new FormData();
+            data.append("account_domain_lookup[name]", name);
+            data.append("account_domain_lookup[domain]", domain);
+            data.append("account_domain_lookup[authentication_provider]", auth);
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                    let responseCode = this.status;
+                    resolve("Run status " + responseCode);
+                }
+            });
+
+            xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
+            
+            xhr.send(data);
+
+        }
+       
 
     })
 }
