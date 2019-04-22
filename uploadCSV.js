@@ -22,10 +22,13 @@ function Run2() {
             CSVDomain = data.data[i].domain;
             CSVAuth = data.data[i].auth;
 
-            //output just to confirm it is parsing. 
-            console.log(CSVName);
-            console.log(CSVDomain);
-            console.log(CSVAuth);
+            //lowerCase convert
+            CSVName = CSVName.toLowerCase();
+            CSVDomain = CSVDomain.toLowerCase();
+            CSVAuth = CSVAuth.toLowerCase();
+
+            //domain removal
+            CSVDomain = CSVDomain.replace(/^https?:\/\//, '');
 
             SubmitRequest2(CSVName, CSVDomain, CSVAuth).then((message)=>{
                 console.log(message);
