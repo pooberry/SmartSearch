@@ -1,4 +1,7 @@
 var CSVFile;
+var CSVName;
+var CSVDomain;
+var CSVAuth;
 //var parsedResults;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -12,15 +15,23 @@ function Run2() {
     FileParse().then((message) =>{
         let data = message;
         console.log(data.data);
-        for(var i = 0; i < data.data.length; i++)
+        for(var i = 0; i < data.data.length; i++)//
         {
-            console.log("name " + data.data[i].name);
+            CSVName = data.data[i].name;
+            CSVDomain = data.data[i].domain;
+            CSVAuth = data.data[i].auth;
+
+            //output just to confirm it is parsing. 
+            console.log(CSVName);
+            console.log(CSVDomain);
+            console.log(CSVAuth);
+
         }
         
        
     }).catch((message) => {
         let data = message
-        console.log(data);
+        alert(data);
     })
 }
 
