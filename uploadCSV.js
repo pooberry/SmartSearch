@@ -86,6 +86,12 @@ chrome.storage.local.get(["token"], function (result) {
 
 function SubmitRequest2(name, domain, auth) {
     return new Promise(function (resolve,reject) {
+
+        if(name== "" || name == null || name == undefined || domain == "" || domain == null || domain == undefined)
+        {
+            reject(error("No Valid data found on line "));
+        }// catch blank lines. 
+
         if (auth != null || auth != undefined || auth != "") {
             var data = new FormData();
             data.append("account_domain_lookup[name]", name);
