@@ -45,9 +45,18 @@ function Run2() {
             if(duplicateCheckCSV == true)
             {
                 CSVcheckForDuplicate(CSVName, CSVDomain).then((message)=>{
+                    if (message == true) {
 
-                }).catch((message)=>{
+                        if (window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID)) {
+                            SubmitRequest2(CSVName, CSVDomain, CSVAuth);
+                        } else {
+                          //do any exit logic that needs to be done. 
+                        }
+                      }
 
+                }).catch((message)=>
+                {
+                    alert(message);
                 })
             }    
 
