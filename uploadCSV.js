@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function Run2() {
     FileStore();
+
+
+
     FileParse().then((message) => {
         let data = message;
         console.log(data.data);
@@ -22,7 +25,7 @@ function Run2() {
             CSVDomain = data.data[i].domain;
             CSVAuth = data.data[i].auth;
 
-            //lowerCase convert
+            //lowerCase
             CSVName = CSVName.toLowerCase();
             CSVDomain = CSVDomain.toLowerCase();
             CSVAuth = CSVAuth.toLowerCase();
@@ -30,13 +33,19 @@ function Run2() {
             //domain removal
             CSVDomain = CSVDomain.replace(/^https?:\/\//, '');
 
-            SubmitRequest2(CSVName, CSVDomain, CSVAuth).then((message)=>{
-                console.log(message);
-
-            }).catch((message)=>{
-
-                console.log(message);
-            })
+            if(duplicateCheckCSV != true){
+                SubmitRequest2(CSVName, CSVDomain, CSVAuth).then((message)=>{
+                    console.log(message);
+    
+                }).catch((message)=>{
+    
+                    console.log(message);
+                })
+            }
+            if(duplicateCheckCSV == true)
+            {
+                
+            }    
 
 
 
@@ -85,6 +94,9 @@ function getChromeVariables()
 chrome.storage.local.get(["token"], function (result) {
     token = result.token;
     })
+    chrome.storage.local.get(["duplicateValidateOnOff"], function (result) {
+        duplicateCheckCSV = result.duplicateValidateOnOff;
+    });
 }
 
 function SubmitRequest2(name, domain, auth) {
