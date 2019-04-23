@@ -44,7 +44,11 @@ function Run2() {
             }
             if(duplicateCheckCSV == true)
             {
-                
+                CSVcheckForDuplicate().then((message)=>{
+
+                }).catch((message)=>{
+                    
+                })
             }    
 
 
@@ -158,3 +162,51 @@ function SubmitRequest2(name, domain, auth) {
 
     })
 }
+function CSVcheckForDuplicate() {
+    return new Promise(function (resolve, reject) {
+         
+      //XHR request
+      var data = null;
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+  
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+          CSVjsonDataArray = JSON.parse(this.responseText)
+          status = this.status;
+            
+  
+          // need logic to catch blank returned array. 
+          if (CSVjsonDataArray.length == undefined || CSVjsonDataArray.length == 0) {
+            console.log("no likely duplicate found")
+            resolve(false)
+          }
+  
+          // if the array is not blank parse the array
+          if (CSVjsonDataArray.length != undefined || CSVjsonDataArray.length != 0) {
+  
+            for (var i = 0; i <= CSVjsonDataArray.length; i++) {
+              if (CSVjsonDataArray[i].name == instName || CSVjsonDataArray[i].domain == instURL) {
+                resolve(true);
+                console.log("Likely duplicate found")
+                duplicateInstanceName = CSVjsonDataArray[i].name;
+                duplicateInstanceURL = CSVjsonDataArray[i].domain;
+                duplicateInstanceID = CSVjsonDataArray[i].id;
+              } else {
+                resolve(false);
+                console.log("no likely duplicate found");
+              }
+            }
+            reject(Error("something went wrong"));
+          }
+        }
+  
+      });
+  
+      xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
+      xhr.setRequestHeader("Authorization", "Bearer " + token);
+  
+      xhr.send(data);
+  
+    })
+  }
