@@ -44,10 +44,10 @@ function Run2() {
             }
             if(duplicateCheckCSV == true)
             {
-                CSVcheckForDuplicate().then((message)=>{
+                CSVcheckForDuplicate(CSVName, CSVDomain).then((message)=>{
 
                 }).catch((message)=>{
-                    
+
                 })
             }    
 
@@ -162,7 +162,7 @@ function SubmitRequest2(name, domain, auth) {
 
     })
 }
-function CSVcheckForDuplicate() {
+function CSVcheckForDuplicate(name, domain) {
     return new Promise(function (resolve, reject) {
          
       //XHR request
@@ -186,7 +186,7 @@ function CSVcheckForDuplicate() {
           if (CSVjsonDataArray.length != undefined || CSVjsonDataArray.length != 0) {
   
             for (var i = 0; i <= CSVjsonDataArray.length; i++) {
-              if (CSVjsonDataArray[i].name == instName || CSVjsonDataArray[i].domain == instURL) {
+              if (CSVjsonDataArray[i].name ==  name || CSVjsonDataArray[i].domain == domain) {
                 resolve(true);
                 console.log("Likely duplicate found")
                 duplicateInstanceName = CSVjsonDataArray[i].name;
