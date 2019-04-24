@@ -14,8 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
 function Run2() {
     FileStore();
 
-
-
     FileParse().then((message) => {
         let data = message;
         console.log(data.data);
@@ -47,12 +45,20 @@ function Run2() {
             if(duplicateCheckCSV == true)
             {
                 CheckForDuplicate2(CSVName, CSVDomain).then((TF)=>{
-                    if(TF == true)
-                    {window.alert("potential duplicate found ");
+                    if(TF == true){
+                        //window.alert("potential duplicate found ");
+                        if(window.confirm("Possible duplicate found pres ok to process, and cancle to abort process " + "\n" + "id:" + duplicateInstanceID + "\nname:" + duplicateInstanceName + "\ndomain:" + duplicateInstanceURL))
+                        {
+                            SubmitRequest2(CSVName, CSVDomain, CSVAuth);
+                        }
+                        else{
+                            // do any needed exit logic.
+                        }
                 }
+
                     if(TF == false)
                     {
-                        window.alert("pontential duplicate not found ");
+                        //window.alert("pontential duplicate not found ");
                     }
 
                 }).catch((message)=>{
@@ -110,9 +116,10 @@ function getChromeVariables() {
 
 function SubmitRequest2(name, domain, auth) {
     return new Promise(function (resolve, reject) {
-
+        
+        
         if (name == "" || name == null || name == undefined || domain == "" || domain == null || domain == undefined) {
-            reject(error("No Valid data found on line "));
+            reject("No Valid data found on line ");
         } // catch blank lines. 
 
         if (auth == null || auth == undefined || auth == "" || auth == "null") {
@@ -177,8 +184,11 @@ function CheckForDuplicate2 (name, domain)
     
         for(var i = 0; i < jsonData.length; i++)
         {
-            if(name == jsonData[i].name || domain == jsonDatat[i].domain )
+            if(name == jsonData[i].name || domain == jsonData[i].domain )
             {
+                duplicateInstanceName = jsonData[i].name;
+                duplicateInstanceURL = jsonData[i].domain;
+                duplicateInstanceID = jsonData[i].id;
                 resolve(true);
                 return;
             }
