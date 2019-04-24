@@ -23,6 +23,16 @@ function FileStore() {
 
 }
 
+function getChromeVariables() {
+
+    chrome.storage.local.get(["token"], function (result) {
+        token = result.token;
+    })
+    chrome.storage.local.get(["duplicateValidateOnOff"], function (result) {
+        duplicateCheckCSV = result.duplicateValidateOnOff;
+    });
+}
+
 function FileParse() {
     return new Promise(function (resolve, reject) {
         Papa.parse(CSVFile, {
@@ -46,13 +56,5 @@ function FileParse() {
 
 }
 
-function getChromeVariables() {
 
-    chrome.storage.local.get(["token"], function (result) {
-        token = result.token;
-    })
-    chrome.storage.local.get(["duplicateValidateOnOff"], function (result) {
-        duplicateCheckCSV = result.duplicateValidateOnOff;
-    });
-}
 
