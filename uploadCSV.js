@@ -9,7 +9,7 @@ getChromeVariables();
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("submitFile").addEventListener("click", Run2);
-});//event listiner for form submission. 
+}); //event listiner for form submission. 
 
 function Run2() {
     FileStore();
@@ -26,42 +26,39 @@ function Run2() {
             CSVAuth = data.data[i].auth;
 
             //lowerCase
+            /*
             CSVName = CSVName.toLowerCase();
             CSVDomain = CSVDomain.toLowerCase();
             CSVAuth = CSVAuth.toLowerCase();
 
             //domain removal
             CSVDomain = CSVDomain.replace(/^https?:\/\//, '');
+            */
 
-            if(duplicateCheckCSV != true){
-                SubmitRequest2(CSVName, CSVDomain, CSVAuth).then((message)=>{
+            if (duplicateCheckCSV != true) {
+                SubmitRequest2(CSVName, CSVDomain, CSVAuth).then((message) => {
                     console.log(message);
-    
-                }).catch((message)=>{
-    
+
+                }).catch((message) => {
+
                     console.log(message);
                 })
             }
             if(duplicateCheckCSV == true)
             {
-                CSVcheckForDuplicate(CSVName, CSVDomain).then((message)=>{
-                    if (message == true) {
+                CheckForDuplicate2(CSVName, CSVDomain).then((TF)=>{
+                    if(TF == true)
+                    {window.alert("potential duplicate found ");
+                }
+                    if(TF == false)
+                    {
+                        window.alert("pontential duplicate not found ");
+                    }
 
-                        if (window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID)) {
-                            SubmitRequest2(CSVName, CSVDomain, CSVAuth);
-                        } else {
-                          //do any exit logic that needs to be done. 
-                        }
-                      }
-
-                }).catch((message)=>
-                {
-                    alert(message);
+                }).catch((message)=>{
+                    console.log(message);
                 })
-            }    
-
-
-
+            }
 
         }
 
@@ -101,11 +98,10 @@ function FileParse() {
 
 }
 
-function getChromeVariables()
-{
-    
-chrome.storage.local.get(["token"], function (result) {
-    token = result.token;
+function getChromeVariables() {
+
+    chrome.storage.local.get(["token"], function (result) {
+        token = result.token;
     })
     chrome.storage.local.get(["duplicateValidateOnOff"], function (result) {
         duplicateCheckCSV = result.duplicateValidateOnOff;
@@ -113,19 +109,17 @@ chrome.storage.local.get(["token"], function (result) {
 }
 
 function SubmitRequest2(name, domain, auth) {
-    return new Promise(function (resolve,reject) {
+    return new Promise(function (resolve, reject) {
 
-        if(name== "" || name == null || name == undefined || domain == "" || domain == null || domain == undefined)
-        {
+        if (name == "" || name == null || name == undefined || domain == "" || domain == null || domain == undefined) {
             reject(error("No Valid data found on line "));
-        }// catch blank lines. 
+        } // catch blank lines. 
 
-        if(auth == null || auth == undefined || auth == "" || auth == "null")
-        {
+        if (auth == null || auth == undefined || auth == "" || auth == "null") {
             var data = new FormData();
             data.append("account_domain_lookup[name]", name);
             data.append("account_domain_lookup[domain]", domain);
-            
+
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
@@ -133,18 +127,16 @@ function SubmitRequest2(name, domain, auth) {
                 if (this.readyState === 4) {
                     console.log(this.responseText);
                     let responseCode = this.status;
-                    
+
                     resolve("Run status " + responseCode);
                 }
             });
 
             xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
             xhr.setRequestHeader("Authorization", "Bearer " + token);
-            
-            xhr.send(data);
-        }
 
-        else{
+            xhr.send(data);
+        } else {
             var data = new FormData();
             data.append("account_domain_lookup[name]", name);
             data.append("account_domain_lookup[domain]", domain);
@@ -163,59 +155,47 @@ function SubmitRequest2(name, domain, auth) {
 
             xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
             xhr.setRequestHeader("Authorization", "Bearer " + token);
-            
+
             xhr.send(data);
 
         }
-       
+
 
     })
 }
-function CSVcheckForDuplicate(name, domain) {
-    return new Promise(function (resolve, reject) {
-         
-      //XHR request
-      var data = null;
-      var xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-  
-      xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4) {
-          CSVjsonDataArray = JSON.parse(this.responseText)
-          status = this.status;
-            
-  
-          // need logic to catch blank returned array. 
-          if (CSVjsonDataArray.length == undefined || CSVjsonDataArray.length == 0) {
-            console.log("no likely duplicate found")
-            resolve(false)
-          }
-  
-          // if the array is not blank parse the array
-          if (CSVjsonDataArray.length != undefined || CSVjsonDataArray.length != 0) {
-  
-            for (var i = 0; i <= CSVjsonDataArray.length; i++) {
-              if (CSVjsonDataArray[i].name ==  name || CSVjsonDataArray[i].domain == domain) {
+function CheckForDuplicate2 (name, domain)
+{return new Promise(function (resolve,reject){
+    var data = null;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        //console.log(this.responseText);
+        let jsonData = JSON.parse(this.responseText);
+    
+        for(var i = 0; i < jsonData.length; i++)
+        {
+            if(name == jsonData[i].name || domain == jsonDatat[i].domain )
+            {
                 resolve(true);
-                console.log("Likely duplicate found")
-                duplicateInstanceName = CSVjsonDataArray[i].name;
-                duplicateInstanceURL = CSVjsonDataArray[i].domain;
-                duplicateInstanceID = CSVjsonDataArray[i].id;
-              } else {
-                resolve(false);
-                console.log("no likely duplicate found");
-              }
+                return;
             }
-            reject(Error("something went wrong"));
-          }
+            else{
+                resolve(false);
+            }
         }
+    
+      }
+    });
+    
+    xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + domain);
+    xhr.setRequestHeader("Authorization", "Bearer " + token);
+    
+    xhr.send(data);
+    
+})
   
-      });
-  
-      xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + instURL);
-      xhr.setRequestHeader("Authorization", "Bearer " + token);
-  
-      xhr.send(data);
-  
-    })
-  }
+
+}
