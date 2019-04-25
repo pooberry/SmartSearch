@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function Run2() {
     FileStore();
 
-    
+
 }
 
 function FileStore() {
@@ -55,23 +55,36 @@ function FileParse() {
     })
 
 }
-function SubmitCSVFile(instanceName, instanceDomain, instanceAuth){
-    FileParse().then((data1)=>{
+
+function SubmitCSVFile(instanceName, instanceDomain, instanceAuth) {
+    FileParse().then((data1) => {
         let dataArray = data1;
         // parse the array
-        for(let i =0; i < dataArray.length; i++)
-        {
+        for (let i = 0; i < dataArray.length; i++) {
             // parse the array
             instanceName = dataArray.data[i].name;
             instanceDomain = dataArray.data[i].domain;
             instanceAuth = dataArray.data[i].auth;
 
-            if(instanceAuth == null || instanceAuth == "null" || instanceAuth=="")
-            {
+            if (instanceAuth == null || instanceAuth == "null" || instanceAuth == "") {
                 instanceAuth = null;
             }
 
-            
+
         }
-    }
-    )}
+    })
+}
+
+function XHRRequestDuplicate(name, domain, auth)
+{
+    
+
+}
+function XHRRequestAuth0()
+{
+
+}
+function XHRRequestAuth1();
+{
+
+}
