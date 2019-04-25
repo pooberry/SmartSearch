@@ -56,7 +56,7 @@ function FileParse() {
 
 }
 
-function SubmitCSVFile(name, domain, auth) {
+function SubmitCSVFile() {
     FileParse().then((data1) => {
         let dataArray = data1;
         // parse the array
@@ -68,7 +68,7 @@ function SubmitCSVFile(name, domain, auth) {
             
             if(duplicateCheckCSV == true)
             {
-
+                
             }
             else{
 
@@ -96,11 +96,16 @@ function XHRRequestDuplicate(name, domain)
                 for(let i = 0; i < duplicateDataArray.length; i++)
                 {
                     if(duplicateDataArray[i].name == name || duplicateDataArray[i].domain == domain){
-                        resolve(true)
+                        duplicateInstanceID = duplicateDataArray[i].id;
+                        duplicateInstanceName = duplicateDataArray[i].name;
+                        duplicateInstanceURL = duplicateDataArray[i].domain;
+                        resolve(true);
+
                     }
                     if(duplicateDataArray.length == 0 || duplicateDataArray.length==undefined)
                     {
-                         resolve(false)                   
+                        
+                         resolve(false);                   
                        
                     }
                     else{
