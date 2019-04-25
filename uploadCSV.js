@@ -55,6 +55,23 @@ function FileParse() {
     })
 
 }
+function SubmitCSVFile(instanceName, instanceDomain, instanceAuth){
+    FileParse().then((data1)=>{
+        let dataArray = data1;
+        // parse the array
+        for(let i =0; i < dataArray.length; i++)
+        {
+            // parse the array
+            instanceName = dataArray.data[i].name;
+            instanceDomain = dataArray.data[i].domain;
+            instanceAuth = dataArray.data[i].auth;
 
+            if(instanceAuth == null || instanceAuth == "null" || instanceAuth=="")
+            {
+                instanceAuth = null;
+            }
 
-
+            
+        }
+    }
+    )}
