@@ -62,16 +62,36 @@ function SubmitCSVFile() {
         // parse the array
         for (let i = 0; i < dataArray.length; i++) {
             // parse the array
-            CSVName = dataArray.data[i].name;
-            CSVDomain = dataArray.data[i].domain;
-            CSVAuth = dataArray.data[i].auth;
+            
             
             if(duplicateCheckCSV == true)
             {
-                
+                XHRRequestDuplicate(CSVName, CSVDomain).then((TF)=>{
+                    CSVName = dataArray.data[i].name;
+                    CSVDomain = dataArray.data[i].domain;
+                    CSVAuth = dataArray.data[i].auth;
+
+                    if(TF = true){
+                          if (window.confirm("OK to process cancel to skip line " + "\nID:" + duplicateInstanceID + "\nName:" + duplicateInstanceName + "\nDomain:" + duplicateInstanceURL)) {
+                              XHRRequestFire(CSVName, CSVDomain, CSVAuth);
+                          } else {
+                              //any needed exit logic
+                          }
+                    }
+                    if( TF = false){
+                        CSVName = dataArray.data[i].name;
+                        CSVDomain = dataArray.data[i].domain;
+                        CSVAuth = dataArray.data[i].auth;
+                        XHRRequestFire(CSVName, CSVDomain, CSVAuth);
+                    }
+                  
+                })
             }
             else{
-
+                CSVName = dataArray.data[i].name;
+                CSVDomain = dataArray.data[i].domain;
+                CSVAuth = dataArray.data[i].auth;
+                XHRRequestFire(CSVName, CSVDomain, CSVAuth);
             }
 
 
@@ -109,7 +129,7 @@ function XHRRequestDuplicate(name, domain)
                        
                     }
                     else{
-                        reject(false);
+                        reject("neither condition met");
                     }
                 }
             }
