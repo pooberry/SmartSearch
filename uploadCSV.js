@@ -56,18 +56,22 @@ function FileParse() {
 
 }
 
-function SubmitCSVFile(instanceName, instanceDomain, instanceAuth) {
+function SubmitCSVFile(name, domain, auth) {
     FileParse().then((data1) => {
         let dataArray = data1;
         // parse the array
         for (let i = 0; i < dataArray.length; i++) {
             // parse the array
-            instanceName = dataArray.data[i].name;
-            instanceDomain = dataArray.data[i].domain;
-            instanceAuth = dataArray.data[i].auth;
+            CSVName = dataArray.data[i].name;
+            CSVDomain = dataArray.data[i].domain;
+            CSVAuth = dataArray.data[i].auth;
+            
+            if(duplicateCheckCSV == true)
+            {
 
-            if (instanceAuth == null || instanceAuth == "null" || instanceAuth == "") {
-                instanceAuth = null;
+            }
+            else{
+
             }
 
 
@@ -75,16 +79,86 @@ function SubmitCSVFile(instanceName, instanceDomain, instanceAuth) {
     })
 }
 
-function XHRRequestDuplicate(name, domain, auth)
+function XHRRequestDuplicate(name, domain)
 {
-    
+    return new Promise(function(resolve, reject){
+        var data = new FormData();
+        data.append("domain", domain);
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+                let duplicateDataArray = JSON.parse(this.responseText);
+                // parse the existing entries
+                for(let i = 0; i < duplicateDataArray.length; i++)
+                {
+                    if(duplicateDataArray[i].name == name || duplicateDataArray[i].domain == domain){
+                        resolve(true)
+                    }
+                    if(duplicateDataArray.length == 0 || duplicateDataArray.length==undefined)
+                    {
+                         resolve(false)                   
+                       
+                    }
+                    else{
+                        reject(false);
+                    }
+                }
+            }
+        });
+
+        xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search");
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
+        
+    })
+
 
 }
-function XHRRequestAuth0()
+function XHRRequestFire(name, domain, auth)
 {
+    if(auth == "" || auth == null || auth == undefined || auth == "null")
+    {
+        var data = new FormData();
+        data.append("account_domain_lookup[name]", name);
+        data.append("account_domain_lookup[domain]", domain);
 
-}
-function XHRRequestAuth1();
-{
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+            }
+        });
+
+        xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
+       
+        xhr.send(data);
+    }
+    else{
+        var data = new FormData();
+        data.append("account_domain_lookup[name]", name);
+        data.append("account_domain_lookup[domain]", domain);
+        data.append("account_domain_lookup[authentication_provider]", auth);
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+            }
+        });
+
+        xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
+        
+        xhr.send(data);
+    }
+
 
 }
