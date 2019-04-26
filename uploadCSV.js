@@ -56,20 +56,42 @@ function FileParse() {
 function SubmitCSVFile() {
     FileParse().then((data1) => {
         let dataArray = data1;
-        let counter = 0;
         console.log(dataArray);
-        //console.log(dataArray[0].name);
         //closure parse loop
-        
-        for (var i = 0; i < dataArray.length; i++) {
-            (function(i) {
-              let name = dataArray[i].name;
-              let domain = dataArray[i].domain;
-              let auth = dataArray[i].auth;
-              XHRRequestFire(name, domain, auth);
-            })(i);
-          } 
-          
+        if(duplicateCheckCSV == true)
+        {
+            for(var i =0; i < dataArray.length; i++)
+            {
+                (function(i) {
+                    let name = dataArray[i].name;
+                    let domain = dataArray[i].domain;
+                    let auth = dataArray[i].auth;
+                    XHRRequestDuplicate(name, domain).then((TFReturn)=>{
+                        let TFBool = TFReturn;
+                        if(TFBool == true){
+                            if(window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID))
+                            {
+                                XHRRequestFire(name,domain,auth);
+                            }
+                            else{
+                                //any exit logic that needs to be done. 
+                            }
+                        }
+                    })
+                  })(i);
+            }
+        }
+        else{
+            for (var i = 0; i < dataArray.length; i++) {
+                (function(i) {
+                  let name = dataArray[i].name;
+                  let domain = dataArray[i].domain;
+                  let auth = dataArray[i].auth;
+                  XHRRequestFire(name, domain, auth);
+                })(i);
+              } 
+        }
+ 
                  
         
     })
