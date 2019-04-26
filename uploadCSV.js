@@ -35,18 +35,14 @@ function getChromeVariables() {
 }
 
 function FileParse() {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
         Papa.parse(CSVFile, {
             header: true,
             dynamicTyping: true,
-            complete: function (results) {
-                //parsedResults = results;
-                //console.log(results);
-                if (results.length != 0 || results.length != undefined) {
-                    resolve(results);
-                } else {
-                    reject(error("CSV was not able to be parsed correctly"));
-                }
+            complete: function(results) {
+              var CSVInfo = results.data;
+              //chrome.storage.local.set({'infoList':CSVInfo.data}, function(){});
+              resolve(CSVInfo);           
 
 
 
@@ -60,38 +56,22 @@ function FileParse() {
 function SubmitCSVFile() {
     FileParse().then((data1) => {
         let dataArray = data1;
-        // parse the array
-        for (let i = 0; i < dataArray.length; i++) {
-            // parse the array
-            CSVName = dataArray.data[i].name;
-            CSVDomain = dataArray.data[i].domain;
-            CSVAuth = dataArray.data[i].auth;
-            
-            if(duplicateCheckCSV == true)
-            {
-                XHRRequestDuplicate(CSVName, CSVDomain).then((TF)=>{
-                    
-
-                    if(TF = true){
-                          if (window.confirm("OK to process cancel to skip line " + "\nID:" + duplicateInstanceID + "\nName:" + duplicateInstanceName + "\nDomain:" + duplicateInstanceURL)) {
-                              XHRRequestFire(CSVName, CSVDomain, CSVAuth);
-                          } else {
-                              //any needed exit logic
-                          }
-                    }
-                    if( TF = false){
-                       XHRRequestFire(CSVName, CSVDomain, CSVAuth);
-                    }
-                  
-                })
-            }
-            else{
-                
-                XHRRequestFire(CSVName, CSVDomain, CSVAuth);
-            }
-
-
-        }
+        let counter = 0;
+        console.log(dataArray);
+        //console.log(dataArray[0].name);
+        //closure parse loop
+        
+        for (var i = 0; i < dataArray.length; i++) {
+            (function(i) {
+              let name = dataArray[i].name;
+              let domain = dataArray[i].domain;
+              let auth = dataArray[i].auth;
+              XHRRequestFire(name, domain, auth);
+            })(i);
+          } 
+          
+                 
+        
     })
 }
 
@@ -140,6 +120,7 @@ function XHRRequestDuplicate(name, domain)
 }
 function XHRRequestFire(name, domain, auth)
 {
+    
     if(auth == "" || auth == null || auth == undefined || auth == "null")
     {
         var data = new FormData();
