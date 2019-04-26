@@ -2,8 +2,7 @@ var CSVFile;
 var CSVName;
 var CSVDomain;
 var CSVAuth;
-//var token;
-//var parsedResults;
+
 
 getChromeVariables();
 
@@ -58,27 +57,29 @@ function SubmitCSVFile() {
         let dataArray = data1;
         console.log(dataArray);
         //closure parse loop
-        if(duplicateCheckCSV == true)
+        if(duplicateCheckCSV === true)
         {
-            for(var i =0; i < dataArray.length; i++)
+            for(let j = 0; j < dataArray.length; j++)
             {
-                (function(i) {
-                    let name = dataArray[i].name;
-                    let domain = dataArray[i].domain;
-                    let auth = dataArray[i].auth;
-                    XHRRequestDuplicate(name, domain).then((TFReturn)=>{
+                (function(j) {
+                    let name1 = dataArray[j].name;
+                    let domain1 = dataArray[j].domain;
+                    let auth1 = dataArray[j].auth;
+                    XHRRequestDuplicate(name1, domain1).then((TFReturn)=>{
                         let TFBool = TFReturn;
+                        console.log(TFBool);
                         if(TFBool == true){
                             if(window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID))
                             {
-                                XHRRequestFire(name,domain,auth);
+                                XHRRequestFire(name1,domain1,auth1);
                             }
                             else{
                                 //any exit logic that needs to be done. 
+
                             }
                         }
                     })
-                  })(i);
+                  })(j);
             }
         }
         else{
