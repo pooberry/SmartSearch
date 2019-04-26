@@ -57,32 +57,7 @@ function SubmitCSVFile() {
         let dataArray = data1;
         console.log(dataArray);
         //closure parse loop
-        if(duplicateCheckCSV === true)
-        {
-            for(let j = 0; j < dataArray.length; j++)
-            {
-                (function(j) {
-                    let name1 = dataArray[j].name;
-                    let domain1 = dataArray[j].domain;
-                    let auth1 = dataArray[j].auth;
-                    XHRRequestDuplicate(name1, domain1).then((TFReturn)=>{
-                        let TFBool = TFReturn;
-                        console.log(TFBool);
-                        if(TFBool == true){
-                            if(window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID))
-                            {
-                                XHRRequestFire(name1,domain1,auth1);
-                            }
-                            else{
-                                //any exit logic that needs to be done. 
-
-                            }
-                        }
-                    })
-                  })(j);
-            }
-        }
-        else{
+        
             for (var i = 0; i < dataArray.length; i++) {
                 (function(i) {
                   let name = dataArray[i].name;
@@ -91,7 +66,7 @@ function SubmitCSVFile() {
                   XHRRequestFire(name, domain, auth);
                 })(i);
               } 
-        }
+        
  
                  
         
