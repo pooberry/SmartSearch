@@ -38,13 +38,10 @@ function FileParse() {
         Papa.parse(CSVFile, {
             header: true,
             dynamicTyping: true,
-            complete: function(results) {
-              var CSVInfo = results.data;
-              //chrome.storage.local.set({'infoList':CSVInfo.data}, function(){});
-              resolve(CSVInfo);           
-
-
-
+            complete: function (results) {
+                var CSVInfo = results.data;
+                //chrome.storage.local.set({'infoList':CSVInfo.data}, function(){});
+                resolve(CSVInfo);
             }
 
         });
@@ -57,25 +54,24 @@ function SubmitCSVFile() {
         let dataArray = data1;
         console.log(dataArray);
         //closure parse loop
-        
-            for (var i = 0; i < dataArray.length; i++) {
-                (function(i) {
-                  let name = dataArray[i].name;
-                  let domain = dataArray[i].domain;
-                  let auth = dataArray[i].auth;
-                  XHRRequestFire(name, domain, auth);
-                })(i);
-              } 
-        
- 
-                 
-        
+
+
+        for (var i = 0; i < dataArray.length; i++) {
+            (function (i) {
+                let name = dataArray[i].name;
+                let domain = dataArray[i].domain;
+                let auth = dataArray[i].auth;
+                XHRRequestFire(name, domain, auth);
+            })(i);
+        }
+
+
+
+
     })
 }
 
-function XHRRequestDuplicate(name, domain)
-{
-    return new Promise(function(resolve, reject){
+function XHRRequestDuplicate(name, domain, auth) {
         var data = new FormData();
         data.append("domain", domain);
 
@@ -87,40 +83,29 @@ function XHRRequestDuplicate(name, domain)
                 console.log(this.responseText);
                 let duplicateDataArray = JSON.parse(this.responseText);
                 // parse the existing entries
-                for(let i = 0; i < duplicateDataArray.length; i++)
-                {
-                    if(duplicateDataArray[i].name == name || duplicateDataArray[i].domain == domain){
+                for (let i = 0; i < duplicateDataArray.length; i++) {
+                    if (duplicateDataArray[i].name == name || duplicateDataArray[i].domain == domain) {
                         duplicateInstanceID = duplicateDataArray[i].id;
                         duplicateInstanceName = duplicateDataArray[i].name;
                         duplicateInstanceURL = duplicateDataArray[i].domain;
-                        resolve(true);
+                        alert("likely duplicate found " + "\n id:" + duplicateInstanceID);
+                        
 
                     }
-                    if(duplicateDataArray.length == 0 || duplicateDataArray.length==undefined)
-                    {
-                        
-                         resolve(false);                   
-                       
-                    }
-                    else{
-                        reject("neither condition met");
-                    }
+                    
                 }
             }
         });
 
         xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search");
         xhr.setRequestHeader("Authorization", "Bearer " + token);
-        
-    })
 
 
 }
-function XHRRequestFire(name, domain, auth)
-{
-    
-    if(auth == "" || auth == null || auth == undefined || auth == "null")
-    {
+
+function XHRRequestFire(name, domain, auth) {
+
+    if (auth == "" || auth == null || auth == undefined || auth == "null") {
         var data = new FormData();
         data.append("account_domain_lookup[name]", name);
         data.append("account_domain_lookup[domain]", domain);
@@ -136,10 +121,9 @@ function XHRRequestFire(name, domain, auth)
 
         xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
         xhr.setRequestHeader("Authorization", "Bearer " + token);
-       
+
         xhr.send(data);
-    }
-    else{
+    } else {
         var data = new FormData();
         data.append("account_domain_lookup[name]", name);
         data.append("account_domain_lookup[domain]", domain);
@@ -156,7 +140,7 @@ function XHRRequestFire(name, domain, auth)
 
         xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
         xhr.setRequestHeader("Authorization", "Bearer " + token);
-        
+
         xhr.send(data);
     }
 
