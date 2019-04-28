@@ -55,15 +55,37 @@ function SubmitCSVFile() {
         console.log(dataArray);
         //closure parse loop
 
-
-        for (var i = 0; i < dataArray.length; i++) {
-            (function (i) {
-                let name = dataArray[i].name;
-                let domain = dataArray[i].domain;
-                let auth = dataArray[i].auth;
-                XHRRequestFire(name, domain, auth);
-            })(i);
+        if(duplicateCheckCSV == true)
+        {
+            for (var i = 0; i < dataArray.length; i++) {
+                (function (i) {
+                    let name1 = dataArray[i].name;
+                    let domain1 = dataArray[i].domain;
+                    let auth1 = dataArray[i].auth;
+                    
+                    XHRRequestDuplicate(name1,domain1).then
+                    {
+                        if (window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort")) {
+                            XHRRequestFire(name1, domain1, auth1);
+                          } else {
+                            //do any exit logic that needs to be done. 
+                          }
+                    }
+                    
+                })(i);
         }
+    }
+        else{
+            for (var i = 0; i < dataArray.length; i++) {
+                (function (i) {
+                    let name = dataArray[i].name;
+                    let domain = dataArray[i].domain;
+                    let auth = dataArray[i].auth;
+                    XHRRequestFire(name, domain, auth);
+                })(i);
+            }
+        }
+        
 
 
 
@@ -71,8 +93,9 @@ function SubmitCSVFile() {
     })
 }
 
-function XHRRequestDuplicate(name, domain, auth) {
-        var data = new FormData();
+function XHRRequestDuplicate(name, domain) {
+   return new Promise(function(resolve, reject){
+    var data = new FormData();
         data.append("domain", domain);
 
         var xhr = new XMLHttpRequest();
@@ -88,9 +111,13 @@ function XHRRequestDuplicate(name, domain, auth) {
                         duplicateInstanceID = duplicateDataArray[i].id;
                         duplicateInstanceName = duplicateDataArray[i].name;
                         duplicateInstanceURL = duplicateDataArray[i].domain;
-                        alert("likely duplicate found " + "\n id:" + duplicateInstanceID);
                         
+                        //alert("likely duplicate found " + "\n id:" + duplicateInstanceID);
+                        resolve(true);
 
+                    }
+                    else{
+                        reject(false);
                     }
                     
                 }
@@ -99,50 +126,54 @@ function XHRRequestDuplicate(name, domain, auth) {
 
         xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search");
         xhr.setRequestHeader("Authorization", "Bearer " + token);
+   })
+        
 
 
 }
 
 function XHRRequestFire(name, domain, auth) {
+    
+        if (auth == "" || auth == null || auth == undefined || auth == "null") {
+            var data = new FormData();
+            data.append("account_domain_lookup[name]", name);
+            data.append("account_domain_lookup[domain]", domain);
+    
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+    
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                }
+            });
+    
+            xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
+    
+            xhr.send(data);
+        } else {
+            var data = new FormData();
+            data.append("account_domain_lookup[name]", name);
+            data.append("account_domain_lookup[domain]", domain);
+            data.append("account_domain_lookup[authentication_provider]", auth);
+    
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+    
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                }
+            });
+    
+            xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
+    
+            xhr.send(data);
+        }
 
-    if (auth == "" || auth == null || auth == undefined || auth == "null") {
-        var data = new FormData();
-        data.append("account_domain_lookup[name]", name);
-        data.append("account_domain_lookup[domain]", domain);
-
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                console.log(this.responseText);
-            }
-        });
-
-        xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
-        xhr.setRequestHeader("Authorization", "Bearer " + token);
-
-        xhr.send(data);
-    } else {
-        var data = new FormData();
-        data.append("account_domain_lookup[name]", name);
-        data.append("account_domain_lookup[domain]", domain);
-        data.append("account_domain_lookup[authentication_provider]", auth);
-
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                console.log(this.responseText);
-            }
-        });
-
-        xhr.open("POST", "https://siteadmin.instructure.com/api/v1/account_domain_lookups/");
-        xhr.setRequestHeader("Authorization", "Bearer " + token);
-
-        xhr.send(data);
-    }
+    
 
 
 }
