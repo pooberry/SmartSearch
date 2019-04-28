@@ -2,6 +2,10 @@ var CSVFile;
 var CSVName;
 var CSVDomain;
 var CSVAuth;
+var CSVduplicateInstanceID;
+var CSVduplicateInstanceName;
+var CSVduplicateInstanceURL;
+
 
 
 getChromeVariables();
@@ -62,15 +66,28 @@ function SubmitCSVFile() {
                     let name1 = dataArray[i].name;
                     let domain1 = dataArray[i].domain;
                     let auth1 = dataArray[i].auth;
+                    console.log("point 69 reached");
                     
-                    XHRRequestDuplicate(name1,domain1).then
-                    {
-                        if (window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort")) {
+                    XHRRequestDuplicate(name1,domain1).then((YN)=>{
+                        console.log("console log " + YN);
+                        if(YN == true)
+                        {
+                            if (window.confirm("A potential duplicate was found." + "\nID:" + CSVduplicateInstanceID + "\nName:" + CSVduplicateInstanceName + "\nDomain:" + CSVduplicateInstanceURL + "\nClick OK to process the request Click cancel to abort")) {
+                                XHRRequestFire(name1, domain1, auth1);
+                              } else {
+                                //do any exit logic that needs to be done. 
+                              }
+                        }
+                        else{
                             XHRRequestFire(name1, domain1, auth1);
-                          } else {
-                            //do any exit logic that needs to be done. 
-                          }
-                    }
+                        }
+                    }).catch((YN)=>{
+                        console.log(YN);
+                    })
+                    
+                        
+                        
+                    
                     
                 })(i);
         }
@@ -106,13 +123,13 @@ function XHRRequestDuplicate(name, domain) {
                 console.log(this.responseText);
                 let duplicateDataArray = JSON.parse(this.responseText);
                 // parse the existing entries
+                
                 for (let i = 0; i < duplicateDataArray.length; i++) {
                     if (duplicateDataArray[i].name == name || duplicateDataArray[i].domain == domain) {
-                        duplicateInstanceID = duplicateDataArray[i].id;
-                        duplicateInstanceName = duplicateDataArray[i].name;
-                        duplicateInstanceURL = duplicateDataArray[i].domain;
+                        CSVduplicateInstanceID = duplicateDataArray[i].id;
+                        CSVduplicateInstanceName = duplicateDataArray[i].name;
+                        CSVduplicateInstanceURL = duplicateDataArray[i].domain;
                         
-                        //alert("likely duplicate found " + "\n id:" + duplicateInstanceID);
                         resolve(true);
 
                     }
