@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function Run2() {
     FileStore();
-    SubmitCSVFile();
+    //SubmitCSVFile();
 
 
 }
@@ -53,46 +53,14 @@ function FileParse() {
 
 }
 
-function SubmitCSVFile() {
+/*function SubmitCSVFile() {
     FileParse().then((data1) => {
         let dataArray = data1;
         console.log(dataArray);
         //closure parse loop
 
-        if(duplicateCheckCSV == true)
-        {
-            for (var i = 0; i < dataArray.length; i++) {
-                (function (i) {
-                    let name1 = dataArray[i].name;
-                    let domain1 = dataArray[i].domain;
-                    let auth1 = dataArray[i].auth;
-                    console.log("point 69 reached");
-                    
-                    XHRRequestDuplicate(name1,domain1).then((YN)=>{
-                        console.log("console log " + YN);
-                        if(YN == true)
-                        {
-                            if (window.confirm("A potential duplicate was found." + "\nID:" + CSVduplicateInstanceID + "\nName:" + CSVduplicateInstanceName + "\nDomain:" + CSVduplicateInstanceURL + "\nClick OK to process the request Click cancel to abort")) {
-                                XHRRequestFire(name1, domain1, auth1);
-                              } else {
-                                //do any exit logic that needs to be done. 
-                              }
-                        }
-                        else{
-                            XHRRequestFire(name1, domain1, auth1);
-                        }
-                    }).catch((YN)=>{
-                        console.log(YN);
-                    })
-                    
-                        
-                        
-                    
-                    
-                })(i);
-        }
-    }
-        else{
+        
+        
             for (var i = 0; i < dataArray.length; i++) {
                 (function (i) {
                     let name = dataArray[i].name;
@@ -101,52 +69,59 @@ function SubmitCSVFile() {
                     XHRRequestFire(name, domain, auth);
                 })(i);
             }
-        }
-        
+                
 
 
 
 
     })
-}
+}*/
 
-function XHRRequestDuplicate(name, domain) {
-   return new Promise(function(resolve, reject){
-    var data = new FormData();
-        data.append("domain", domain);
+function duplicateHandler()
+{
+    FileParse().then((data2)=>{
+        for(var i = 0; i< data2.length; i++){
+            (function (i){
+                var name2 = data2[i].name;
+                var domain2 = data2[i].domain;
+                var auth2 = data2[i].auth;
 
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                console.log(this.responseText);
-                let duplicateDataArray = JSON.parse(this.responseText);
-                // parse the existing entries
-                
-                for (let i = 0; i < duplicateDataArray.length; i++) {
-                    if (duplicateDataArray[i].name == name || duplicateDataArray[i].domain == domain) {
-                        CSVduplicateInstanceID = duplicateDataArray[i].id;
-                        CSVduplicateInstanceName = duplicateDataArray[i].name;
-                        CSVduplicateInstanceURL = duplicateDataArray[i].domain;
-                        
-                        resolve(true);
-
-                    }
-                    else{
-                        reject(false);
-                    }
+                XHRRequestDuplicate(name2, domain2).then((data3)=>{
                     
-                }
-            }
-        });
-
-        xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search");
-        xhr.setRequestHeader("Authorization", "Bearer " + token);
-   })
-        
-
-
+                })
+            })(i)
+        }
+    })
+    console.log(CSV)
+    function XHRRequestDuplicate(name, domain) {
+        return new Promise(function(resolve, reject){
+         var data = new FormData();
+             data.append("domain", domain);
+     
+             var xhr = new XMLHttpRequest();
+             xhr.withCredentials = true;
+     
+             xhr.addEventListener("readystatechange", function () {
+                 if (this.readyState === 4) {
+                     console.log(this.responseText);
+                     let duplicateDataArray = JSON.parse(this.responseText);
+                     if(this.status == 200){
+                         resolve(duplicateDataArray);
+                     }
+                     else{
+                         reject(duplicateDataArray);
+                     }
+                 }
+             });
+     
+             xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search");
+             xhr.setRequestHeader("Authorization", "Bearer " + token);
+        })
+             
+     
+     
+     }
+     
 }
 
 function XHRRequestFire(name, domain, auth) {
