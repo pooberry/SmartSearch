@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
 function Run2() {
     FileStore();
     //SubmitCSVFile();
+    duplicateHandler();
+
 
 
 }
@@ -87,6 +89,13 @@ function duplicateHandler()
                 var auth2 = data2[i].auth;
 
                 XHRRequestDuplicate(name2, domain2).then((data3)=>{
+                    if(data3[i].name == data2[i].name || data3[i].domain == data2[i].domain)
+                    {
+                        alert("duplicate found");
+                    }
+                    else{
+                        XHRRequestFire(name2, domain2, auth2);
+                    }
                     
                 })
             })(i)
