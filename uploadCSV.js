@@ -5,6 +5,7 @@ var CSVAuth;
 
 
 
+
 getChromeVariables();
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -26,6 +27,7 @@ function getChromeVariables() {
     })
     chrome.storage.local.get(["duplicateValidateOnOff"], function (result) {
         duplicateCheckCSV = result.duplicateValidateOnOff;
+
     });
 }
 
@@ -34,15 +36,37 @@ function getChromeVariables() {
 async function DrMoo(){
     FileStore();
     const array1 = await FileParse();
-    let domain = array1[0].domain;
-    console.log(domain);
-    const array2 = await XHRRequestDuplicate(domain);
-    console.log(array2);
+    for(let elm1 of array1)
+    {
+        
+
+        let csvLineName = elm1.name;
+        let csvLineDomain = elm1.domain;
+        let csvLineAuth = elm1.auth;
+        console.log(csvLineName + csvLineDomain + csvLineAuth);
+
+        let array2 =  await XHRRequestDuplicate(csvLineDomain);
+        for(let elm2 of array2)
+        {
+            let duplicateLineName = elm2.name;
+            let duplicateLineDomain = elm2.domain;
+            let duplicateLineAuth = elm2.auth;
+
+            console.log("dupecall" + duplicateLineName + duplicateLineDomain + duplicateLineAuth);
+        }
+        
+
+
+    }
+                
+            
+        
+    }
     
     
      
 
-}
+
 
 function FileStore() {
     CSVFile = document.getElementById("file").files[0];
@@ -106,8 +130,22 @@ function FileParse() {
             xhr.addEventListener("readystatechange", function () {
               if (this.readyState === 4) {
                 console.log(this.responseText);
+                console.log(this.status);
+                if(this.status == 200)
+                {
+                    let duplicateFindArray = JSON.parse(this.responseText);
+                resolve(duplicateFindArray);
+
+                }
+                if(this.status != 200)
+                {
+                    console.log("call not successfull");
+                    reject("call not successfull");
+                }
+                
               }
             });
+
             
             xhr.open("GET", "https://siteadmin.instructure.com/api/v1/accounts/search?domain=" + domain);
             xhr.setRequestHeader("Authorization", "Bearer " + token);
@@ -163,6 +201,15 @@ function XHRRequestFire(name, domain, auth) {
             xhr.setRequestHeader("Authorization", "Bearer " + token);
     
             xhr.send(data);
+        }
+        function duplicateHandle(){
+            var comparteName;
+            var compare
+            return new Promise(function(resolve,reject){
+
+
+            })
+        
         }
 
     
