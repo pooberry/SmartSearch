@@ -14,10 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function Run2() {
     DrMoo();
-
-
-
-
 }
 
 function getChromeVariables() {
@@ -54,8 +50,12 @@ async function DrMoo() {
                 let duplicateLineAuth = elm2.authentication_provider;
 
                 console.log("dupecall\n" + duplicateLineName + duplicateLineDomain + duplicateLineAuth);
-                let ynDuplicate =  await duplicateHandle(duplicateLineName, duplicateLineDomain,csvLineName,csvLineDomain);
+                if(array2.length != 0 || array2.length != undefined)
+                {
+                    let ynDuplicate =  await duplicateHandle(duplicateLineName, duplicateLineDomain,csvLineName,csvLineDomain);
                 console.log(ynDuplicate);
+                }
+                
             }
         }
 
