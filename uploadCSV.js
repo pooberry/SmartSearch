@@ -10,10 +10,10 @@ getChromeVariables();
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("submitFile").addEventListener("click", Run2);
-}); //event listiner for form submission. 
+}); //event listiner for form file submission. 
 
 function Run2() {
-    DrMoo();
+    DrMoo(); //async function to carry out on form submission
 }
 
 function getChromeVariables() {
@@ -229,7 +229,7 @@ function duplicateHandle(DLA, DLN, DLD, CLN, CLD, DLID) {
         if (DLA.length == 0 || DLA.length == undefined) {
             reject(false);
         }
-        if (DLN == CLN || DLD == CLD) {
+        if (DLN == CLN && DLD == CLD) {
             console.log("a duplicate may have been found");
             duplicateInstanceName = DLN;
             duplicateInstanceURL = DLD;
