@@ -41,7 +41,11 @@ function successFail(returnStatus) {
     if (returnStatus != "200") {
         alert("fail");
     }
-    if (returnStatus == null) {
-        //do nothing
+    if (returnStatus == 401) {
+        alert("unothorized error returned please check your token.");
+    }
+    else{
+        //do nothing;
+        console.log("response status was not anticipated");
     }
 }

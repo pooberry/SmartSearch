@@ -244,3 +244,7 @@ function duplicateHandle(DLA, DLN, DLD, CLN, CLD, DLID) {
     })
 
 }
+function done()
+{
+    
+}
