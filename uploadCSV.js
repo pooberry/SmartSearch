@@ -53,24 +53,33 @@ async function DrMoo() {
                 console.log(array2.length);
                 console.log("dupecall\n" + duplicateLineName + duplicateLineDomain + duplicateLineAuth, duplicateLineID);
 
-                if (array2.length != 0) {
-                    let ynDuplicate = await duplicateHandle(duplicateLineName, duplicateLineDomain, csvLineName, csvLineDomain, duplicateLineID);
-                    console.log(ynDuplicate);
+                try{
+                     let ynDuplicate = await duplicateHandle(array2, duplicateLineName, duplicateLineDomain, csvLineName, csvLineDomain, duplicateLineID);
+                     console.log(ynDuplicate);
 
-                    if (ynDuplicate == true) {
-                        if (window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID)) {
-                            XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
+                     if (ynDuplicate == true) {
+                         if (window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID)) {
+                             XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
 
-                        } else {
-                            //any exit logic that will need to be done. 
+                         } else {
+                             //any exit logic that will need to be done. 
 
-                        }
-                    }
-                    if (ynDuplicate == false) {
+                         }
+                     }
+                     if (ynDuplicate == false) {
+                         XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
+                     }
+
+                }catch(e){
+                    if(e == false)
+                    {
                         XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
                     }
 
                 }
+                   
+
+                
 
 
             }
@@ -229,9 +238,13 @@ function XHRRequestFire(name, domain, auth) {
 
 }
 
-function duplicateHandle(DLN, DLD, CLN, CLD, DLID) {
+function duplicateHandle(DLA, DLN, DLD, CLN, CLD, DLID) {
 
-    return new Promise(function (resolve) {
+    return new Promise(function (resolve, reject) {
+        if(DLA.length == 0 || DLA.length == undefined)
+        {
+            reject(false);
+        }
         if (DLN == CLN || DLD == CLD) {
             console.log("a duplicate may have been found");
             duplicateInstanceName = DLN;
@@ -244,6 +257,7 @@ function duplicateHandle(DLN, DLD, CLN, CLD, DLID) {
             console.log("No likely duplicates ")
             resolve(false);
         }
+        
 
 
     })
