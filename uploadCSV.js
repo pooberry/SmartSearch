@@ -42,35 +42,42 @@ async function DrMoo() {
         console.log(csvLineName + csvLineDomain + csvLineAuth);
 
         if (duplicateCheckCSV == true) {
-            let array2 = await XHRRequestDuplicate(csvLineDomain);
+            var array2 = await XHRRequestDuplicate(csvLineDomain);
+
             for (let elm2 of array2) // second  nested parse for of loop
             {
                 let duplicateLineName = elm2.name;
                 let duplicateLineDomain = elm2.domain;
                 let duplicateLineAuth = elm2.authentication_provider;
                 let duplicateLineID = elm2.id;
-
+                console.log(array2.length);
                 console.log("dupecall\n" + duplicateLineName + duplicateLineDomain + duplicateLineAuth, duplicateLineID);
-                if(array2.length != 0 || array2.length != undefined)
-                {
-                    let ynDuplicate =  await duplicateHandle(duplicateLineName, duplicateLineDomain,csvLineName,csvLineDomain,duplicateLineID);
-                console.log(ynDuplicate);
-                if(ynDuplicate == true)
-                {
-                    if(window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID))
-                    {
+
+                if (array2.length != 0) {
+                    let ynDuplicate = await duplicateHandle(duplicateLineName, duplicateLineDomain, csvLineName, csvLineDomain, duplicateLineID);
+                    console.log(ynDuplicate);
+
+                    if (ynDuplicate == true) {
+                        if (window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID)) {
+                            XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
+
+                        } else {
+                            //any exit logic that will need to be done. 
+
+                        }
+                    }
+                    if (ynDuplicate == false) {
                         XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
-
                     }
-                    else{
-                        //any exit logic that will need to be done. 
-                        
-                    }
-                }
 
                 }
-                
+
+
             }
+        } else {
+            XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
+
+
         }
 
 
@@ -180,7 +187,7 @@ function XHRRequestDuplicate(domain) {
 
 
 function XHRRequestFire(name, domain, auth) {
-
+    console.log("sending post request");
     if (auth == "" || auth == null || auth == undefined || auth == "null") {
         var data = new FormData();
         data.append("account_domain_lookup[name]", name);
@@ -221,29 +228,24 @@ function XHRRequestFire(name, domain, auth) {
     }
 
 }
-    function duplicateHandle(DLN,DLD,CLN,CLD, DLID) {
-        
-        return new Promise(function (resolve) {
-            if(DLN == CLN || DLD == CLD)
-            {
-                console.log("a duplicate may have been found");
-                duplicateInstanceName = DLN;
-                duplicateInstanceURL = DLD;
-                duplicateInstanceID = DLID;
-                
-                resolve(true);
 
-            }
-            else{
-                console.log("No likely duplicates ")
-                resolve(false);
-            }
+function duplicateHandle(DLN, DLD, CLN, CLD, DLID) {
 
+    return new Promise(function (resolve) {
+        if (DLN == CLN || DLD == CLD) {
+            console.log("a duplicate may have been found");
+            duplicateInstanceName = DLN;
+            duplicateInstanceURL = DLD;
+            duplicateInstanceID = DLID;
 
-        })
+            resolve(true);
 
-    }
+        } else {
+            console.log("No likely duplicates ")
+            resolve(false);
+        }
 
 
+    })
 
-
+}
