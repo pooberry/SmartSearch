@@ -42,7 +42,7 @@ function successFail(returnStatus) {
         alert("fail");
     }
     if (returnStatus == 401) {
-        alert("unothorized error returned please check your token.");
+        alert("unauthorized error returned please check your token.");
     }
     else{
         //do nothing;
