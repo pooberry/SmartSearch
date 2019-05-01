@@ -48,12 +48,26 @@ async function DrMoo() {
                 let duplicateLineName = elm2.name;
                 let duplicateLineDomain = elm2.domain;
                 let duplicateLineAuth = elm2.authentication_provider;
+                let duplicateLineID = elm2.id;
 
-                console.log("dupecall\n" + duplicateLineName + duplicateLineDomain + duplicateLineAuth);
+                console.log("dupecall\n" + duplicateLineName + duplicateLineDomain + duplicateLineAuth, duplicateLineID);
                 if(array2.length != 0 || array2.length != undefined)
                 {
-                    let ynDuplicate =  await duplicateHandle(duplicateLineName, duplicateLineDomain,csvLineName,csvLineDomain);
+                    let ynDuplicate =  await duplicateHandle(duplicateLineName, duplicateLineDomain,csvLineName,csvLineDomain,duplicateLineID);
                 console.log(ynDuplicate);
+                if(ynDuplicate == true)
+                {
+                    if(window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID))
+                    {
+                        XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
+
+                    }
+                    else{
+                        //any exit logic that will need to be done. 
+                        
+                    }
+                }
+
                 }
                 
             }
@@ -207,13 +221,18 @@ function XHRRequestFire(name, domain, auth) {
     }
 
 }
-    function duplicateHandle(DLN,DLD,CLN,CLD) {
+    function duplicateHandle(DLN,DLD,CLN,CLD, DLID) {
         
         return new Promise(function (resolve) {
             if(DLN == CLN || DLD == CLD)
             {
                 console.log("a duplicate may have been found");
+                duplicateInstanceName = DLN;
+                duplicateInstanceURL = DLD;
+                duplicateInstanceID = DLID;
+                
                 resolve(true);
+
             }
             else{
                 console.log("No likely duplicates ")
