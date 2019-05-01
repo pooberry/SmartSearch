@@ -40,12 +40,16 @@ async function DrMoo() {
         let csvLineDomain = elm1.domain;
         let csvLineAuth = elm1.auth;
         console.log(csvLineName + csvLineDomain + csvLineAuth);
-
+        var array2 = await XHRRequestDuplicate(csvLineDomain);
+        console.log("array 2 is " + array2.length + " long");
         if (duplicateCheckCSV == true) {
-            var array2 = await XHRRequestDuplicate(csvLineDomain);
-
-            for (let elm2 of array2) // second  nested parse for of loop
+            
+            if(array2.length === 0)
             {
+                XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
+            }
+            else{
+                for (let elm2 of array2){ // second  nested parse for of loop
                 let duplicateLineName = elm2.name;
                 let duplicateLineDomain = elm2.domain;
                 let duplicateLineAuth = elm2.authentication_provider;
@@ -82,32 +86,19 @@ async function DrMoo() {
 
 
             }
+            }
+            
         } else {
             XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
-
-
         }
-
-
-
-
     }
-
-
-
 }
-
-
-
-
-
 
 function FileStore() {
     CSVFile = document.getElementById("file").files[0];
     console.log(CSVFile.name);
 
 }
-
 
 function FileParse() {
     return new Promise(function (resolve) {
@@ -149,7 +140,6 @@ function FileParse() {
     })
 }*/
 
-
 function XHRRequestDuplicate(domain) {
     return new Promise(function (resolve, reject) {
         console.log("running...")
@@ -187,9 +177,6 @@ function XHRRequestDuplicate(domain) {
 
 
     })
-
-
-
 }
 
 
@@ -234,7 +221,6 @@ function XHRRequestFire(name, domain, auth) {
 
         xhr.send(data);
     }
-
 }
 
 function duplicateHandle(DLA, DLN, DLD, CLN, CLD, DLID) {
@@ -255,9 +241,6 @@ function duplicateHandle(DLA, DLN, DLD, CLN, CLD, DLID) {
             console.log("No likely duplicates ")
             resolve(false);
         }
-
-
-
     })
 
 }
