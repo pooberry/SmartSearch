@@ -52,7 +52,7 @@ function run() //run the following functions on button press
 
       // check for duplicate and handle if one is possible
       if (message == true) {
-      window.open("dialog.html", "_blank", "toolbar=yes,scrollbars=no,resizable=yes,top=500,left=500,width=400px,height=178px");
+      window.open("dialog.html", "_blank", "toolbar=yes,scrollbars=no,resizable=yes, width=400px,height=178px");
 
         // if (window.confirm("A potential duplicate was found. \nClick OK to process the request Click cancel to abort\n" + duplicateInstanceName + "\n" + duplicateInstanceURL + "\n" + duplicateInstanceID)) {
         //   submitRequest();
