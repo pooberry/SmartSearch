@@ -92,6 +92,8 @@ async function DrMoo() {
             XHRRequestFire(csvLineName, csvLineDomain, csvLineAuth);
         }
     }
+    alert("Done");
+    window.close;
 }
 
 function FileStore() {
