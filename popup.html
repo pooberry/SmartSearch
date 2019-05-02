@@ -9,6 +9,15 @@ input{height: 20px; width: 100px; outline: black;}
     <script src="popup.js"></script>
     <script src="background.js"></script>
     <script src="options.js"></script>
+    <!--Putting this here even though it doesn't work yet. If we truely want this to be SELF service. The CSM's will want to have a way to pull up their current entry and edit it from th extension and send the request">-->
+    <script> $("#school-input").on("input", function(){
+          $.getJSON("https://siteadmin.instructure.com/api/v1/accounts/search?search_term=" + encodeURIComponent(this.value).replace(/%20/g, "+"), function(data){
+            $("#schools-results").html("");
+            data.forEach(function(school){
+              $("#schools-results").append("<li><a href='http://"+school.domain+"'>"+school.name+"</a></li>");
+            }) 
+        </script>
+
 </head>
 <body>
 
@@ -16,6 +25,9 @@ input{height: 20px; width: 100px; outline: black;}
 
 <!--What is your token? <input type="text" id="enterToken" value="">-->
 <!--<br>-->
+Search for your current school: 
+  <input type="text" id="school-input" placeholder="Name of your school..." >
+  <ul id="schools-results"></ul>
 what is the instance name?<input type="text" id="enterName" value="">
 <br>
 what is the instance URL? <input type="text" id="enterURL" value="">
@@ -24,5 +36,4 @@ what does the instance use for authentication? <input type="text" id="enterAuth"
 <br><br>
 
 <button id="swag">Create Entry</button>
-<p><a href="UploadCSV.html" id="UPloadCSVID">Upload a CSV</p>
 </body>
