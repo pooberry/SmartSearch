@@ -93,7 +93,7 @@ async function DrMoo() {
         }
     }
     alert("Done");
-    window.close;
+    
 }
 
 function FileStore() {
